@@ -1,0 +1,21 @@
+meta {
+  name: addOrUpdateAvion
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{base_url}}/avions
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "immatriculation": "B-Z123",
+    "marque": "BANANEDOUCE",
+    "modele": "B32AZEAZ0",
+    "statut": "Bctiazdf",
+    "heuresDeVol": 50
+  }
+}

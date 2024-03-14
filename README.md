@@ -1,2 +1,3 @@
-# GestEPI
-Dashboard de la gestion des Equipements de Protection Individuel
+# Projet GestEPI
+
+### CAKICI Fatih - BTS SIO SLAM 2IEME ANNÉE
