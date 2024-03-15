@@ -1,10 +1,10 @@
 //********** Imports **********//
 import { epiTypeModel } from '../models/epiTypeModel'; 
-import { EpiType, EpiTypeFilter } from '../types/type';
+import { EpiType } from '../types/type';
 
 
 //********** Managers **********//
-export const manageGetAllEpiTypes = async (filters?: EpiTypeFilter): Promise<EpiType[]> => {
+export const manageGetAllEpiTypes = async (filters?: EpiType): Promise<EpiType[]> => {
   if (filters && Object.keys(filters).length) {
     return epiTypeModel.getWithFilters(filters);
   }

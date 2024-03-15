@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { EpiType } from "@/types/type";
+import { EpiCheck } from "@/types/type";
 import { Button } from "@/components/molecules/Button";
 import { Typography } from "@/components/atoms/Typography";
 import { DataTable } from "@/components/molecules/DataTable";
@@ -9,34 +9,33 @@ import { TbPlane, TbPlus } from "react-icons/tb";
 import { DashboardLayout } from "@/components/templates/DashboardLayout";
 
 import toast from "react-hot-toast";
+import { EpiCheckCreateModal } from "@/components/molecules/EpiCheckCreateModal";
+import { EpiCheckDeleteModal } from "@/components/molecules/EpiCheckDeleteModal";
+import { EpiCheckEditModal } from "@/components/molecules/EpiCheckEditModal";
 
-import { EpiTypeEditModal } from "@/components/molecules/EpiTypeEditModal";
-import { EpiTypeCreateModal } from "@/components/molecules/EpiTypeCreateModal";
-import { EpiTypeDeleteModal } from "@/components/molecules/EpiTypeDeleteModal";
-
-export const EpiTypeListPage = () => {
-  const [epiTypes, setEpiTypes] = useState<EpiType[]>([]);
+export const EpiCheckListPage = () => {
+  const [epiChecks, setEpiChecks] = useState<EpiCheck[]>([]);
   const [modalState, setModalState] = useState({
     create: false,
     edit: false,
     delete: false,
   });
-  const [selectedEpiType, setSelectedEpiType] = useState(
-    null as EpiType | null
+  const [selectedEpiCheck, setSelectedEpiCheck] = useState(
+    null as EpiCheck | null
   );
 
   useEffect(() => {
-    const fetchEpiTypes = async () => {
+    const fetchEpiChecks = async () => {
       try {
-        const response = await axios.get("http://localhost:5500/types");
-        setEpiTypes(response.data);
-        console.log("EpiTypes récupérés:", response.data);
+        const response = await axios.get("http://localhost:5500/checks");
+        setEpiChecks(response.data);
+        console.log("EpiChecks récupérés:", response.data);
       } catch (error) {
-        console.error("Erreur lors de la récupération des epiTypes");
+        console.error("Erreur lors de la récupération des epiChecks");
       }
     };
 
-    fetchEpiTypes();
+    fetchEpiChecks();
   }, []);
 
   const handleOpenCreateModal = () => {
@@ -45,32 +44,32 @@ export const EpiTypeListPage = () => {
 
   const handleCloseModal = () => {
     setModalState({ create: false, edit: false, delete: false });
-    setSelectedEpiType(null);
+    setSelectedEpiCheck(null);
   };
 
-  const handleOpenEditModal = (epiType: EpiType) => {
-    setSelectedEpiType(epiType);
+  const handleOpenEditModal = (epiCheck: EpiCheck) => {
+    setSelectedEpiCheck(epiCheck);
     setModalState({ ...modalState, edit: true });
   };
 
-  const handleOpenDeleteModal = (epiType: EpiType) => {
-    setSelectedEpiType(epiType);
+  const handleOpenDeleteModal = (epiCheck: EpiCheck) => {
+    setSelectedEpiCheck(epiCheck);
     setModalState({ ...modalState, delete: true });
   };
 
-  const reloadEpiTypes = async (
+  const reloadEpiChecks = async (
     message: string = "Action réalisée avec succès"
   ) => {
     try {
       const response = await axios.get("http://localhost:5500/types");
-      setEpiTypes(response.data);
+      setEpiChecks(response.data);
       toast.success(message, {
         duration: 4000,
         position: "bottom-right",
       });
     } catch (error) {
-      console.error("Erreur lors du rechargement des epiTypes:", error);
-      toast.error("Erreur lors du rechargement des types d'équipements", {
+      console.error("Erreur lors du rechargement des epiChecks:", error);
+      toast.error("Erreur lors du rechargement des contrôles", {
         duration: 4000,
         position: "bottom-right",
       });
@@ -83,13 +82,13 @@ export const EpiTypeListPage = () => {
         <div className="mt-10 flex items-center m-auto gap-5 border rounded-full bg-white px-6 py-2">
           <TbPlane size={30} />
           <Typography variant="h1" weight="semibold" align="center">
-            Liste des types d'équipements
+            Contrôle des EPI
           </Typography>
         </div>
 
         <div className="flex self-end">
           <Button
-            label="Ajouter un type d'équipement"
+            label="Réaliser un contrôle"
             fullWidth
             onClick={handleOpenCreateModal}
             marginClass="my-5"
@@ -100,39 +99,35 @@ export const EpiTypeListPage = () => {
         <DataTable
           displayTotalNumber
           enableGlobalSearch
-          data={epiTypes}
+          data={epiChecks}
           columns={configureColumns(handleOpenEditModal, handleOpenDeleteModal)}
           enablePagination
         />
       </DashboardLayout>
 
-      {selectedEpiType && modalState.delete && (
-        <EpiTypeDeleteModal
+      {selectedEpiCheck && modalState.delete && (
+        <EpiCheckDeleteModal
           isOpen={modalState.delete}
           onClose={handleCloseModal}
-          epiType={selectedEpiType}
-          onSuccess={() => reloadEpiTypes("Suppresion d'un type d'équipement")}
+          epiCheck={selectedEpiCheck}
+          onSuccess={() => reloadEpiChecks("Suppresion d'un contrôle")}
         />
       )}
 
-      {selectedEpiType && (
-        <EpiTypeEditModal
+      {selectedEpiCheck && (
+        <EpiCheckEditModal
           isOpen={modalState.edit}
           onClose={handleCloseModal}
-          epiType={selectedEpiType}
-          onSuccess={() =>
-            reloadEpiTypes("Modification du nom de l'équipement")
-          }
+          epiCheck={selectedEpiCheck}
+          onSuccess={() => reloadEpiChecks("Modification du contrôle")}
         />
       )}
 
       {modalState.create && (
-        <EpiTypeCreateModal
+        <EpiCheckCreateModal
           isOpen={modalState.create}
           onClose={handleCloseModal}
-          onSuccess={() =>
-            reloadEpiTypes("Ajout d'un nouveau type d'équipement")
-          }
+          onSuccess={() => reloadEpiChecks("Ajout d'un nouveau contrôle")}
         />
       )}
     </>

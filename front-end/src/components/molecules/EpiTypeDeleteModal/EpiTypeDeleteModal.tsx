@@ -21,7 +21,7 @@ export const EpiTypeDeleteModal: React.FC<DeleteModalProps> = ({
 }) => {
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:5500/epi-types/${epiType.id}`);
+      await axios.delete(`http://localhost:5500/types/${epiType.id}`);
       console.log(`EPI type avec l'id ${epiType.id} supprimé.`);
       onSuccess();
       onClose();

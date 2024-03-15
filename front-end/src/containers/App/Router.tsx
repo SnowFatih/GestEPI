@@ -1,21 +1,19 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import { TbHome, TbPlane, TbTool, TbUsers } from "react-icons/tb";
+import { TbHome, TbTool } from "react-icons/tb";
 import { HomePage } from "@/components/pages/HomePage";
 import { ErrorLayout } from "@/components/templates/ErrorLayout";
 import { Button } from "@/components/molecules/Button";
-import { MecanicienListPage } from "@/components/pages/MecanicienListPage";
-import { EntretienListPage } from "@/components/pages/EntretienListPage";
 import { EpiTypeListPage } from "@/components/pages/EpiTypeListPage";
 import { SidebarLink } from "@/components/molecules/SideNavigation";
+import { EpiCheckListPage } from "@/components/pages/EpiCheckListPage";
 
 export const Router = () => {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/epi-types" element={<EpiTypeListPage />} />
-      <Route path="/mecaniciens" element={<MecanicienListPage />} />
-      <Route path="/entretiens" element={<EntretienListPage />} />
+      <Route path="/epi/types" element={<EpiTypeListPage />} />
+      <Route path="/epi/checks" element={<EpiCheckListPage />} />
 
       <Route
         path="*"
@@ -39,20 +37,14 @@ export const SIDEBAR_LINKS: SidebarLink[] = [
   },
   {
     name: "Liste d'équipements",
-    to: "/epi-types",
+    to: "/epi/types",
     icon: <TbTool />,
     id: 2,
   },
   {
-    name: "Mécaniciens",
-    to: "/mecaniciens",
-    icon: <TbUsers />,
-    id: 3,
-  },
-  {
-    name: "Entretiens",
-    to: "/entretiens",
+    name: "Contrôle des EPI",
+    to: "/epi/checks",
     icon: <TbTool />,
-    id: 4,
+    id: 3,
   },
 ];

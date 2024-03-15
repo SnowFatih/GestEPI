@@ -4,29 +4,29 @@ import { BaseModal } from "@/components/molecules/BaseModal";
 import { Button } from "@/components/molecules/Button";
 import { Typography } from "@/components/atoms/Typography";
 
-import { Mecanicien } from "@/types/type";
+import { EpiCheck } from "@/types/type";
 
 interface DeleteModalProps {
   isOpen: boolean;
   onClose: () => void;
-  mecanicien: Mecanicien;
+  epiCheck: EpiCheck;
   onSuccess: () => void;
 }
 
-export const MecanicienDeleteModal: React.FC<DeleteModalProps> = ({
+export const EpiCheckDeleteModal: React.FC<DeleteModalProps> = ({
   isOpen,
   onClose,
-  mecanicien,
+  epiCheck,
   onSuccess,
 }) => {
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:5500/mecaniciens/${mecanicien.id}`);
-      console.log(`Mecanicien avec l'id ${mecanicien.id} est supprimé.`);
+      await axios.delete(`http://localhost:5500/checks/${epiCheck.id}`);
+      console.log(`EPI type avec l'id ${epiCheck.id} supprimé.`);
       onSuccess();
       onClose();
     } catch (error) {
-      console.error("Erreur lors de la suppression du mecanicien:", error);
+      console.error("Erreur lors de la suppression de l'epi type:", error);
     }
   };
 
@@ -36,16 +36,13 @@ export const MecanicienDeleteModal: React.FC<DeleteModalProps> = ({
         Confirmer la suppression
       </Typography>
       <Typography variant="paragraph" marginClass="my-4" align="center">
-        Êtes-vous sûr de vouloir retirer{" "}
-        <strong>
-          {mecanicien.nom} {mecanicien.prenom}
-        </strong>{" "}
-        ?
+        Êtes-vous sûr de vouloir supprimer le contrôle du{" "}
+        <strong>{epiCheck.checkDate}</strong> réalisé par {epiCheck.userId} ?
       </Typography>
       <div className="flex justify-around gap-5">
         <Button label="Annuler" color="alert" fullWidth onClick={onClose} />
         <Button
-          label="Retirer"
+          label="Supprimer"
           color="primary"
           fullWidth
           onClick={handleDelete}

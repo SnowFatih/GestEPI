@@ -30,7 +30,7 @@ export const EpiTypeCreateModal: React.FC<ModalProps> = ({
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5500/epi-types",
+        "http://localhost:5500/types",
         newEpiType
       );
       console.log("Nouvel epiType ajouté:", response.data);
@@ -43,7 +43,7 @@ export const EpiTypeCreateModal: React.FC<ModalProps> = ({
 
   return (
     <BaseModal isOpen={isOpen} maxWidth="xl" onCloseClick={onClose}>
-      <Typography marginClass="mt-5" align="center">
+      <Typography marginClass="mt-5" align="center" variant="h2">
         Ajout d'un nouveau type d'équipement :
       </Typography>
       <form className="flex flex-col gap-4 p-4" onSubmit={handleSubmit}>

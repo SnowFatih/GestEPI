@@ -1,99 +1,107 @@
 import React, { useEffect, useState } from "react";
-import { Avion, Mecanicien } from "@/types/type";
+
 import { BaseModal } from "@/components/molecules/BaseModal";
 import { Button } from "@/components/molecules/Button";
 import { Typography } from "@/components/atoms/Typography";
+import { Switch } from "@/components/organisms/Switch";
 import axios from "axios";
+import { EpiCheck } from "@/types/type";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  avions: Avion[];
-  mecanicien: Mecanicien;
+  epiCheck: EpiCheck;
   onSuccess: () => void;
 }
 
-export const MecanicienEditModal: React.FC<ModalProps> = ({
-  avions,
+export const EpiCheckEditModal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
-  mecanicien,
+  epiCheck,
   onSuccess,
 }) => {
-  const [editMecanicien, setEditMecanicien] = useState<Mecanicien>(mecanicien);
+  const [editEpiCheck, setEditEpiCheck] = useState<EpiCheck>(epiCheck);
 
   useEffect(() => {
-    setEditMecanicien(mecanicien);
-  }, [mecanicien]);
+    setEditEpiCheck(epiCheck);
+  }, [epiCheck]);
 
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setEditMecanicien({ ...editMecanicien, [name]: value });
+    setEditEpiCheck({ ...editEpiCheck, [name]: value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:5500/mecaniciens/`, editMecanicien);
+      await axios.post(`http://localhost:5500/checks/`, editEpiCheck);
       onSuccess();
       onClose();
     } catch (error) {
-      console.error("Erreur lors de la mise à jour du mecanicien:", error);
+      console.error("Erreur lors de la mise à jour de l'epiCheck:", error);
     }
   };
 
   return (
     <BaseModal isOpen={isOpen} maxWidth="xl" onCloseClick={onClose}>
-      <Typography marginClass="mt-5" align="center">
-        Modification des informations du mécanicien:
+      <Typography marginClass="mt-5" align="center" variant="h2">
+        Modification du contrôle datant du
       </Typography>
       <Typography variant="h3" align="center" weight="semibold">
-        {editMecanicien?.nom} {editMecanicien?.prenom}
+        {editEpiCheck?.checkDate}
       </Typography>
       <form className="flex flex-col gap-4 p-4" onSubmit={handleSubmit}>
         <span>
           <Typography variant="paragraph" marginClass="mb-1">
-            Nom :
+            Équipement à contrôler* :
           </Typography>
           <input
-            type="text"
-            name="nom"
-            value={editMecanicien?.nom}
+            type="number"
+            name="epiId"
+            value={editEpiCheck?.epiId}
             onChange={handleInputChange}
-            placeholder="Nom"
+            placeholder="Casque"
             required
           />
         </span>
         <span>
           <Typography variant="paragraph" marginClass="mb-1">
-            Prénom :
+            Date du contrôle*:
           </Typography>
           <input
             type="text"
-            name="prenom"
-            value={editMecanicien?.prenom}
+            name="checkDate"
+            value={editEpiCheck?.checkDate}
             onChange={handleInputChange}
-            placeholder="Prénom"
+            placeholder="21 avril 2024"
             required
           />
         </span>
         <span>
           <Typography variant="paragraph" marginClass="mb-1">
-            Avion attribué :
+            Statut du contrôle*:
           </Typography>
-          <select
-            name="idAvion"
-            value={editMecanicien?.idAvion}
+          <input
+            type="number"
+            name="checkStatus"
+            value={editEpiCheck?.checkStatus}
             onChange={handleInputChange}
+            placeholder="Conforme"
             required
-          >
-            <option value="">Aucun avion attribué</option>
-            {avions.map((avion) => (
-              <option key={avion.id} value={avion.id}>
-                [{avion.marque}] - {avion.modele}
-              </option>
-            ))}
-          </select>
+          />
+        </span>
+        <span>
+          <Typography variant="paragraph" marginClass="mb-1">
+            Utilisateur à charge du contrôle*:
+          </Typography>
+          <input
+            type="number"
+            name="userId"
+            value={editEpiCheck?.userId}
+            onChange={handleInputChange}
+            placeholder="Utilisateur"
+            required
+          />
         </span>
 
         <div className="flex gap-5 justify-around mt-4">

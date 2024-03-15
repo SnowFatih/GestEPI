@@ -1,8 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import * as middlewares from './middlewares';
-import avionController from './controller/avionController';
 import epiTypeController from './controller/epiTypeController';
+import epiCheckController from './controller/epiCheckController';
 
 
 
@@ -22,8 +22,8 @@ app.use(cors(options));
 
 app.use(express.json());
 
-app.use('/avions', avionController);
-app.use('/epi-types', epiTypeController);
+app.use('/types', epiTypeController);
+app.use('/checks', epiCheckController);
 
 
 

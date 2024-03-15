@@ -1,15 +1,15 @@
 //********** Imports **********/
-import { Avion, AvionFilters } from '../types/type';
+import { EpiCheck } from '../types/type';
 import { pool } from './bdd';
 
 
 //********** Model **********//
-export const avionModel = {
-  getAll: async (): Promise<Avion[]> => {
+export const epiCheckModel = {
+  getAll: async (): Promise<EpiCheck[]> => {
     let connection;
     try {
       connection = await pool.getConnection();
-      const query = 'SELECT * FROM Avions;';
+      const query = 'SELECT * FROM epiCheck;';
       const rows = await connection.query(query);
       return rows; 
     } catch (error) {
@@ -19,12 +19,12 @@ export const avionModel = {
     }
   },
 
-  getByImmatriculation: async (immatriculation: string) => {
+  getById: async (id: string) => {
     let connection;
     try {
       connection = await pool.getConnection();
       const rows = await pool.query(
-        `select * from Avions where immatriculation = "${immatriculation}"`,
+        `select * from epiCheck where id = "${id}"`,
       );
       return rows;
     } catch (error) {
@@ -35,20 +35,26 @@ export const avionModel = {
   },
   
   getWithFilters: async (
-    params: AvionFilters,
+    params: EpiCheck,
   ) => {
     let connection;
     try {
       connection = await pool.getConnection();
-      let query = 'select * from Avions where ';
+      let query = 'select * from epiCheck where ';
       Object.keys(params).forEach((item, index) => {
-        if (item === 'immatriculation') {
+        if (item === 'id') {
           query += `${item} = "${params[item]}"`;
         }
-        if (item === 'marque') {
+        if (item === 'epiId') {
           query += `${item} = "${params[item]}"`;
         }
-        if (item === 'modele') {
+        if (item === 'checkDate') {
+          query += `${item} = "${params[item]}"`;
+        }
+        if (item === 'checkStatus') {
+          query += `${item} = "${params[item]}"`;
+        }
+        if (item === 'userId') {
           query += `${item} = "${params[item]}"`;
         }
         if (index != Object.keys(params).length - 1) {
@@ -64,32 +70,32 @@ export const avionModel = {
     }
   },
 
-  addOrUpdate: async (avion: Avion) => {
+  addOrUpdate: async (epiCheck: EpiCheck) => {
     let connection;
     try {
       connection = await pool.getConnection();
       const query = `
-        INSERT INTO Avions (id, immatriculation, marque, modele, statut, heuresDeVol, logoUrl)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO epiCheck (id, epiId, checkDate, checkStatus, userId)
+        VALUES (?, ?, ?, ?, ?)
         ON DUPLICATE KEY UPDATE 
-        id=VALUES(id), marque=VALUES(marque), modele=VALUES(modele), statut=VALUES(statut), heuresDeVol=VALUES(heuresDeVol), logoUrl=VALUES(logoUrl);
+        id=VALUES(id), epiId=VALUES(epiId), checkDate=VALUES(checkDate), checkStatus=VALUES(checkStatus), userId=VALUES(userId);
       `;
-      const params = [avion.id, avion.immatriculation, avion.marque, avion.modele, avion.statut, avion.heuresDeVol, avion.logoUrl];
+      const params = [epiCheck.id, epiCheck.epiId, epiCheck.checkDate, epiCheck.checkStatus, epiCheck.userId];
       const result = await connection.query(query, params);
       return result;
     } catch (error) {
-      throw new Error("Erreur de BDD lors de la mise à jour ou de l'ajout d'un avion.");
+      throw new Error("Erreur de BDD lors de la mise à jour ou de l'ajout d'un epiCheck.");
     } finally {
       if (connection) connection.release();
     }
   },
 
-  delete: async (immatriculation: string) => {
+  delete: async (id: string) => {
     let connection;
     try {
       connection = await pool.getConnection();
       const rows = await pool.query(
-        `delete from Avions where immatriculation = "${immatriculation}"`,
+        `delete from epiCheck where id = "${id}"`,
       );
       return rows;
     } catch (error) {

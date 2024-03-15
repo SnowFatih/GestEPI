@@ -34,7 +34,7 @@ export const EpiTypeEditModal: React.FC<ModalProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:5500/epi-types/`, editEpiType);
+      await axios.post(`http://localhost:5500/types/`, editEpiType);
       onSuccess();
       onClose();
     } catch (error) {
@@ -44,7 +44,7 @@ export const EpiTypeEditModal: React.FC<ModalProps> = ({
 
   return (
     <BaseModal isOpen={isOpen} maxWidth="xl" onCloseClick={onClose}>
-      <Typography marginClass="mt-5" align="center">
+      <Typography marginClass="mt-5" align="center" variant="h2">
         Modification des informations de l'équipement:
       </Typography>
       <Typography variant="h3" align="center" weight="semibold">

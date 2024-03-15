@@ -1,100 +1,106 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { BaseModal } from "@/components/molecules/BaseModal";
 import { Button } from "@/components/molecules/Button";
 import { Typography } from "@/components/atoms/Typography";
-import { Avion } from "@/types/type";
 
 const initialState = {
-  nom: "",
-  prenom: "",
-  idAvion: 0,
+  epiId: "",
+  checkDate: "",
+  checkStatus: "",
+  userId: "",
 };
 
 interface ModalProps {
-  avions: Avion[];
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
 }
 
-export const MecanicienCreateModal: React.FC<ModalProps> = ({
-  avions,
+export const EpiCheckCreateModal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
   onSuccess,
 }) => {
-  const [newMecanicien, setNewMecanicien] = useState(initialState);
+  const [newEpiCheck, setNewEpiCheck] = useState(initialState);
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
-    setNewMecanicien({ ...newMecanicien, [name]: value });
+    setNewEpiCheck({ ...newEpiCheck, [name]: value });
   };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5500/mecaniciens",
-        newMecanicien
+        "http://localhost:5500/checks",
+        newEpiCheck
       );
+      console.log("Nouvel epiCheck ajouté:", response.data);
       onClose();
       onSuccess();
     } catch (error) {
-      console.error("Erreur lors de l'ajout du nouveau mécanicien:", error);
+      console.error("Erreur lors de l'ajout du nouvel epiCheck:", error);
     }
   };
 
   return (
     <BaseModal isOpen={isOpen} maxWidth="xl" onCloseClick={onClose}>
-      <Typography marginClass="mt-5" align="center">
-        Ajout d'un nouveau mécanicien :
+      <Typography marginClass="mt-5" align="center" variant="h2">
+        Effectuer un nouveau contrôle d'EPI :
       </Typography>
       <form className="flex flex-col gap-4 p-4" onSubmit={handleSubmit}>
         <span>
           <Typography variant="paragraph" marginClass="mb-1">
-            Nom* :
+            Équipement à contrôler* :
           </Typography>
           <input
-            type="text"
-            name="nom"
-            value={newMecanicien?.nom}
+            type="number"
+            name="epiId"
+            value={newEpiCheck?.epiId}
             onChange={handleInputChange}
-            placeholder="Nom"
+            placeholder="Casque"
             required
           />
         </span>
         <span>
           <Typography variant="paragraph" marginClass="mb-1">
-            Prénom* :
+            Date du contrôle*:
           </Typography>
           <input
             type="text"
-            name="prenom"
-            value={newMecanicien?.prenom}
+            name="checkDate"
+            value={newEpiCheck?.checkDate}
             onChange={handleInputChange}
-            placeholder="Prénom"
+            placeholder="21 avril 2024"
             required
           />
         </span>
-
         <span>
           <Typography variant="paragraph" marginClass="mb-1">
-            Avion attribué :
+            Statut du contrôle*:
           </Typography>
-          <select
-            name="idAvion"
-            value={newMecanicien.idAvion}
+          <input
+            type="number"
+            name="checkStatus"
+            value={newEpiCheck?.checkStatus}
             onChange={handleInputChange}
+            placeholder="Conforme"
             required
-          >
-            <option value="">Aucun avion attribué</option>
-            {avions.map((avion) => (
-              <option key={avion.id} value={avion.id}>
-                [{avion.marque}] - {avion.modele}
-              </option>
-            ))}
-          </select>
+          />
+        </span>
+        <span>
+          <Typography variant="paragraph" marginClass="mb-1">
+            Utilisateur à charge du contrôle*:
+          </Typography>
+          <input
+            type="number"
+            name="userId"
+            value={newEpiCheck?.userId}
+            onChange={handleInputChange}
+            placeholder="Utilisateur"
+            required
+          />
         </span>
 
         <div className="flex gap-5 justify-around mt-4">
@@ -105,5 +111,3 @@ export const MecanicienCreateModal: React.FC<ModalProps> = ({
     </BaseModal>
   );
 };
-
-export default MecanicienCreateModal;
