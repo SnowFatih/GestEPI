@@ -4,33 +4,29 @@ import { BaseModal } from "@/components/molecules/BaseModal";
 import { Button } from "@/components/molecules/Button";
 import { Typography } from "@/components/atoms/Typography";
 
-import { Avion } from "@/types/type";
+import { EpiType } from "@/types/type";
 
 interface DeleteModalProps {
   isOpen: boolean;
   onClose: () => void;
-  avion: Avion;
+  epiType: EpiType;
   onSuccess: () => void;
 }
 
-export const AvionDeleteModal: React.FC<DeleteModalProps> = ({
+export const EpiTypeDeleteModal: React.FC<DeleteModalProps> = ({
   isOpen,
   onClose,
-  avion,
+  epiType,
   onSuccess,
 }) => {
   const handleDelete = async () => {
     try {
-      await axios.delete(
-        `http://localhost:5500/avions/${avion.immatriculation}`
-      );
-      console.log(
-        `Avion avec l'immatriculation ${avion.immatriculation} supprimé.`
-      );
+      await axios.delete(`http://localhost:5500/epi-types/${epiType.id}`);
+      console.log(`EPI type avec l'id ${epiType.id} supprimé.`);
       onSuccess();
       onClose();
     } catch (error) {
-      console.error("Erreur lors de la suppression de l'avion:", error);
+      console.error("Erreur lors de la suppression de l'epi type:", error);
     }
   };
 
@@ -40,11 +36,7 @@ export const AvionDeleteModal: React.FC<DeleteModalProps> = ({
         Confirmer la suppression
       </Typography>
       <Typography variant="paragraph" marginClass="my-4" align="center">
-        Êtes-vous sûr de vouloir supprimer{" "}
-        <strong>
-          {avion.marque} {avion.modele}
-        </strong>{" "}
-        ?
+        Êtes-vous sûr de vouloir supprimer <strong>{epiType.label}</strong> ?
       </Typography>
       <div className="flex justify-around gap-5">
         <Button label="Annuler" color="alert" fullWidth onClick={onClose} />

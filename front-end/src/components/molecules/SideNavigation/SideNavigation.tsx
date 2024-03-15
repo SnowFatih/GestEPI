@@ -1,53 +1,19 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment } from "react";
-import {
-  TbBuilding,
-  TbFlagExclamation,
-  TbHome,
-  TbPlane,
-  TbTool,
-  TbUsers,
-  TbX,
-} from "react-icons/tb";
 
 import { Logo } from "@/components/atoms/Logo";
 import { NavLink } from "@/components/molecules/NavLink";
 import { NavMenu } from "@/components/molecules/NavMenu";
+import { SIDEBAR_LINKS } from "@/containers/App/Router";
+import { TbX } from "react-icons/tb";
 
-type SidebarLink = {
+export type SidebarLink = {
   name: string;
   to: string;
   icon: React.ReactNode;
   id: number;
   admin?: boolean;
 };
-
-const SIDEBAR_LINKS: SidebarLink[] = [
-  {
-    name: "Page d'accueil",
-    to: "/",
-    icon: <TbHome />,
-    id: 1,
-  },
-  {
-    name: "Avions",
-    to: "/avions",
-    icon: <TbPlane />,
-    id: 2,
-  },
-  {
-    name: "Mécaniciens",
-    to: "/mecaniciens",
-    icon: <TbUsers />,
-    id: 3,
-  },
-  {
-    name: "Entretiens",
-    to: "/entretiens",
-    icon: <TbTool />,
-    id: 4,
-  },
-];
 
 interface Props {
   sidebarOpen: boolean;

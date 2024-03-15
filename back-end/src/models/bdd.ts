@@ -6,7 +6,7 @@ export const pool = mariadb.createPool({
   port: 3306,
   user: 'root',
   password: 'root',
-  database: 'gestions_vols',
+  database: 'GestEPI',
   bigNumberStrings: true,
   connectionLimit: 5,
 });

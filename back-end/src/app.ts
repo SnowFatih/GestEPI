@@ -2,8 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import * as middlewares from './middlewares';
 import avionController from './controller/avionController';
-import mecanicienController from './controller/mecanicienController';
-import entretienController from './controller/entretienController';
+import epiTypeController from './controller/epiTypeController';
 
 
 
@@ -24,8 +23,7 @@ app.use(cors(options));
 app.use(express.json());
 
 app.use('/avions', avionController);
-app.use('/mecaniciens', mecanicienController);
-app.use('/entretiens', entretienController);
+app.use('/epi-types', epiTypeController);
 
 
 

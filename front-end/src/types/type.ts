@@ -1,3 +1,8 @@
+export interface EpiType {
+  id: number;
+  label: string;
+}
+
 export interface Avion {
   id: number;
   immatriculation: string;

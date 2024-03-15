@@ -1,15 +1,15 @@
 //********** Imports **********/
-import { Entretien, EntretienFilters } from '../types/type';
+import { EpiType } from '../types/type';
 import { pool } from './bdd';
 
 
 //********** Model **********//
-export const entretienModel = {
-  getAll: async (): Promise<Entretien[]> => {
+export const epiTypeModel = {
+  getAll: async (): Promise<EpiType[]> => {
     let connection;
     try {
       connection = await pool.getConnection();
-      const query = 'SELECT * FROM Entretiens;';
+      const query = 'SELECT * FROM epiType;';
       const rows = await connection.query(query);
       return rows; 
     } catch (error) {
@@ -18,28 +18,34 @@ export const entretienModel = {
       if (connection) connection.release();
     }
   },
+
+  getById: async (id: string) => {
+    let connection;
+    try {
+      connection = await pool.getConnection();
+      const rows = await pool.query(
+        `select * from epiType where id = "${id}"`,
+      );
+      return rows;
+    } catch (error) {
+      return error;
+    } finally {
+      if (connection) connection.release();
+    }
+  },
   
   getWithFilters: async (
-    params: EntretienFilters,
+    params: EpiType,
   ) => {
     let connection;
     try {
       connection = await pool.getConnection();
-      let query = 'select * from Entretiens where ';
+      let query = 'select * from epiType where ';
       Object.keys(params).forEach((item, index) => {
-        if (item === 'idAvion') {
+        if (item === 'id') {
           query += `${item} = "${params[item]}"`;
         }
-        if (item === 'idMecanicien') {
-          query += `${item} = "${params[item]}"`;
-        }
-        if (item === 'debutDate') {
-          query += `${item} = "${params[item]}"`;
-        }
-        if (item === 'finDate') {
-          query += `${item} = "${params[item]}"`;
-        }
-        if (item === 'description') {
+        if (item === 'label') {
           query += `${item} = "${params[item]}"`;
         }
         if (index != Object.keys(params).length - 1) {
@@ -55,21 +61,21 @@ export const entretienModel = {
     }
   },
 
-  addOrUpdate: async (entretien: Entretien) => {
+  addOrUpdate: async (epiType: EpiType) => {
     let connection;
     try {
       connection = await pool.getConnection();
       const query = `
-        INSERT INTO Entretiens (id, idAvion, idMecanicien, debutDate, finDate, description)
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO epiType (id, label)
+        VALUES (?, ?)
         ON DUPLICATE KEY UPDATE 
-        id=VALUES(id), idAvion=VALUES(idAvion), idMecanicien=VALUES(idMecanicien), debutDate=VALUES(debutDate), finDate=VALUES(finDate), description=VALUES(description);
+        id=VALUES(id), label=VALUES(label);
       `;
-      const params = [entretien.id, entretien.idAvion, entretien.idMecanicien, entretien.debutDate, entretien.finDate, entretien.description];
+      const params = [epiType.id, epiType.label];
       const result = await connection.query(query, params);
       return result;
     } catch (error) {
-      throw new Error("Erreur de BDD lors de la mise à jour ou de la création d'un entretien.");
+      throw new Error("Erreur de BDD lors de la mise à jour ou de l'ajout d'un epiType.");
     } finally {
       if (connection) connection.release();
     }
@@ -80,7 +86,7 @@ export const entretienModel = {
     try {
       connection = await pool.getConnection();
       const rows = await pool.query(
-        `delete from Entretiens where id = "${id}"`,
+        `delete from epiType where id = "${id}"`,
       );
       return rows;
     } catch (error) {

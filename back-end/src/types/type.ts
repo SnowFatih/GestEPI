@@ -1,3 +1,5 @@
+import e from "express";
+
 // AVION
 export interface Avion {
   id: number;
@@ -17,35 +19,15 @@ export interface AvionFilters {
   heuresDeVol?: number;
 }
 
-// MECANICIEN
 
-export interface Mecanicien {
+// EPI TYPE
+
+export interface EpiType {
   id: number;
-  nom: string;
-  prenom: string;
-  idAvion: number;
+  label: string;
 }
-
-export interface MecanicienFilters {
-  nom?: string;
-  prenom?: string;
-  idAvion?: number;
-}
-
-// ENTRETIEN
-export interface Entretien {
+export interface EpiTypeFilter {
   id: number;
-  idAvion: number;
-  idMecanicien: number;
-  debutDate: string;
-  finDate: string;
-  description: string;
+  label: string;
 }
 
-export interface EntretienFilters {
-  idAvion?: number;
-  idMecanicien?: number;
-  debutDate?: string;
-  finDate?: string;
-  description?: string;
-}

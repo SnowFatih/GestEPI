@@ -1,0 +1,17 @@
+meta {
+  name: AddOrUpdateEPITypes
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/epi-types
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "label": "fzfze"
+  }
+}

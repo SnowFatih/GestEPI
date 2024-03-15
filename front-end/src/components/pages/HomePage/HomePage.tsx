@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Avion, Entretien, Mecanicien } from "@/types/type";
+import { Entretien, EpiType, Mecanicien } from "@/types/type";
 import { Typography } from "@/components/atoms/Typography";
 import { DashboardLayout } from "@/components/templates/DashboardLayout";
 import StatCardGrid from "@/components/molecules/StatCardGrid/StatCardGrid";
 
-import { TbPlane, TbTool, TbUsers } from "react-icons/tb";
+import { TbTool, TbUsers } from "react-icons/tb";
 
 export const HomePage = () => {
-  const [avions, setAvions] = useState<Avion[]>([]);
+  const [epiTypes, setEpiTypes] = useState<EpiType[]>([]);
   useEffect(() => {
     const fetchAvions = async () => {
       try {
-        const response = await axios.get("http://localhost:5500/avions");
-        setAvions(response.data);
+        const response = await axios.get("http://localhost:5500/epi-types");
+        setEpiTypes(response.data);
       } catch (error) {
-        console.error("Erreur lors de la récupération des avions");
+        console.error("Erreur lors de la récupération des types d'EPI");
       }
     };
 
@@ -50,11 +50,6 @@ export const HomePage = () => {
     fetchEntretiens();
   }, []);
 
-  const avionsActif = avions.filter((avion) => avion.statut === "Actif").length;
-  const avionInactif = avions.filter(
-    (avion) => avion.statut === "Inactif"
-  ).length;
-
   const mecanicienAvecAvion = mecaniciens.filter(
     (mecanicien) => mecanicien.idAvion !== null
   );
@@ -77,27 +72,13 @@ export const HomePage = () => {
       </div>
 
       <StatCardGrid
-        title="Avions"
-        icon={<TbPlane />}
+        title="Équipements de Protection Individuel"
+        icon={<TbTool />}
         stats={[
           {
-            title: "Avions au total",
-            value: avions.length,
+            title: "Types de matériel au total",
+            value: epiTypes.length,
             color: "text-green-600",
-          },
-          {
-            title: "Avions actifs",
-            value: avionsActif,
-            suffix: `/ ${avions.length}`,
-            color: "text-green-600",
-            suffixColor: "text-green-300",
-          },
-          {
-            title: "Avions inactifs",
-            value: avionInactif,
-            suffix: `/ ${avions.length}`,
-            color: "text-red-600",
-            suffixColor: "text-red-300",
           },
         ]}
       />
