@@ -8,6 +8,8 @@ import systemeassurageSrc from "@/assets/icons/systemeassurage.png";
 
 export interface Props {
   type: string;
+  width?: number;
+  height?: number;
 }
 
 const iconSrc: { [key: string]: string } = {
@@ -19,12 +21,20 @@ const iconSrc: { [key: string]: string } = {
   "Système d'assurage": systemeassurageSrc,
 };
 
-export const IconEPI = ({ type }: Props) => {
+export const IconEPI = ({ type, width, height }: Props) => {
   const src = iconSrc[type];
 
   if (!src) {
     return <div>N/C</div>;
   }
 
-  return <img src={src} alt={`${type} Icon`} className="h-full" />;
+  return (
+    <img
+      src={src}
+      alt={`${type} Icon`}
+      className="h-full"
+      width={width}
+      height={height}
+    />
+  );
 };

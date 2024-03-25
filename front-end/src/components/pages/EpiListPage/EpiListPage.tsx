@@ -5,7 +5,7 @@ import { Button } from "@/components/molecules/Button";
 import { Typography } from "@/components/atoms/Typography";
 import { DataTable } from "@/components/molecules/DataTable";
 import { configureColumns } from "./tableDefinition";
-import { TbPlus, TbTool } from "react-icons/tb";
+import { TbHexagonLetterE, TbPlus, TbTool } from "react-icons/tb";
 import { DashboardLayout } from "@/components/templates/DashboardLayout";
 
 import toast from "react-hot-toast";
@@ -13,9 +13,9 @@ import { EpiCheckCreateModal } from "@/components/molecules/EpiCheckCreateModal"
 import { EpiCheckDeleteModal } from "@/components/molecules/EpiCheckDeleteModal";
 import { EpiCheckEditModal } from "@/components/molecules/EpiCheckEditModal";
 
-export const EpiCheckListPage = () => {
+export const EpiListPage = () => {
   const [epiChecks, setEpiChecks] = useState<EpiCheck[]>([]);
-  const [epi, setEpi] = useState<EPI[]>([]);
+  const [epiList, setEpiList] = useState<EPI[]>([]);
   const [epiUsers, setUsers] = useState<User[]>([]);
   const [epiTypes, setEpiTypes] = useState<EpiType[]>([]);
   const [modalState, setModalState] = useState({
@@ -23,11 +23,20 @@ export const EpiCheckListPage = () => {
     edit: false,
     delete: false,
   });
-  const [selectedEpiCheck, setSelectedEpiCheck] = useState(
-    null as EpiCheck | null
-  );
+  const [selectedEpiList, setSelectedEpiList] = useState(null as EPI | null);
 
   useEffect(() => {
+    const fetchEpiList = async () => {
+      try {
+        const response = await axios.get("http://localhost:5500/epi");
+        setEpiList(response.data);
+        console.log("EpiList récupérés:", response.data);
+      } catch (error) {
+        console.error("Erreur lors de la récupération de la liste des epis");
+      }
+    };
+    fetchEpiList();
+
     const fetchEpiChecks = async () => {
       try {
         const response = await axios.get("http://localhost:5500/checks");
@@ -38,17 +47,6 @@ export const EpiCheckListPage = () => {
       }
     };
     fetchEpiChecks();
-
-    const fetchEpi = async () => {
-      try {
-        const response = await axios.get("http://localhost:5500/epi");
-        setEpi(response.data);
-        console.log("EpiChecks récupérés:", response.data);
-      } catch (error) {
-        console.error("Erreur lors de la récupération des epi");
-      }
-    };
-    fetchEpi();
 
     const fetchUsers = async () => {
       try {
@@ -65,6 +63,7 @@ export const EpiCheckListPage = () => {
       try {
         const response = await axios.get("http://localhost:5500/types");
         setEpiTypes(response.data);
+        console.log("Epi type récupérés:", response.data);
       } catch (error) {
         console.error("Erreur lors de la récupération des epiTypes", error);
       }
@@ -78,16 +77,16 @@ export const EpiCheckListPage = () => {
 
   const handleCloseModal = () => {
     setModalState({ create: false, edit: false, delete: false });
-    setSelectedEpiCheck(null);
+    setSelectedEpiList(null);
   };
 
-  const handleOpenEditModal = (epiCheck: EpiCheck) => {
-    setSelectedEpiCheck(epiCheck);
+  const handleOpenEditModal = (epiList: EPI) => {
+    setSelectedEpiList(epiList);
     setModalState({ ...modalState, edit: true });
   };
 
-  const handleOpenDeleteModal = (epiCheck: EpiCheck) => {
-    setSelectedEpiCheck(epiCheck);
+  const handleOpenDeleteModal = (epiList: EPI) => {
+    setSelectedEpiList(epiList);
     setModalState({ ...modalState, delete: true });
   };
 
@@ -114,9 +113,9 @@ export const EpiCheckListPage = () => {
     <>
       <DashboardLayout>
         <div className="mt-10 flex items-center m-auto gap-5 border rounded-full bg-white px-6 py-2">
-          <TbTool size={30} />
+          <TbHexagonLetterE size={30} />
           <Typography variant="h1" weight="semibold" align="center">
-            Contrôle des EPI
+            Équipements de Protection Individuelle
           </Typography>
         </div>
 
@@ -133,19 +132,18 @@ export const EpiCheckListPage = () => {
         <DataTable
           displayTotalNumber
           enableGlobalSearch
-          data={epiChecks}
+          data={epiList}
           columns={configureColumns(
             handleOpenEditModal,
             handleOpenDeleteModal,
             epiUsers,
-            epi,
             epiTypes
           )}
           enablePagination
         />
       </DashboardLayout>
 
-      {selectedEpiCheck && modalState.delete && (
+      {/* {selectedEpiCheck && modalState.delete && (
         <EpiCheckDeleteModal
           isOpen={modalState.delete}
           onClose={handleCloseModal}
@@ -160,8 +158,6 @@ export const EpiCheckListPage = () => {
           onClose={handleCloseModal}
           epiCheck={selectedEpiCheck}
           users={epiUsers}
-          epi={epi}
-          types={epiTypes}
           onSuccess={() => reloadEpiChecks("Modification du contrôle")}
         />
       )}
@@ -171,11 +167,9 @@ export const EpiCheckListPage = () => {
           isOpen={modalState.create}
           onClose={handleCloseModal}
           users={epiUsers}
-          types={epiTypes}
-          epi={epi}
           onSuccess={() => reloadEpiChecks("Ajout d'un nouveau contrôle")}
         />
-      )}
+      )} */}
     </>
   );
 };

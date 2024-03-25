@@ -1,19 +1,21 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import { TbHome, TbTool } from "react-icons/tb";
+import { TbHexagonLetterE, TbHome, TbList, TbTool } from "react-icons/tb";
 import { HomePage } from "@/components/pages/HomePage";
 import { ErrorLayout } from "@/components/templates/ErrorLayout";
 import { Button } from "@/components/molecules/Button";
 import { EpiTypeListPage } from "@/components/pages/EpiTypeListPage";
 import { SidebarLink } from "@/components/molecules/SideNavigation";
 import { EpiCheckListPage } from "@/components/pages/EpiCheckListPage";
+import { EpiListPage } from "@/components/pages/EpiListPage";
 
 export const Router = () => {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/epi/types" element={<EpiTypeListPage />} />
-      <Route path="/epi/checks" element={<EpiCheckListPage />} />
+      <Route path="/epi" element={<EpiListPage />} />
+      <Route path="/types" element={<EpiTypeListPage />} />
+      <Route path="/checks" element={<EpiCheckListPage />} />
 
       <Route
         path="*"
@@ -36,15 +38,21 @@ export const SIDEBAR_LINKS: SidebarLink[] = [
     id: 1,
   },
   {
-    name: "Liste d'équipements",
-    to: "/epi/types",
-    icon: <TbTool />,
+    name: "EPI",
+    to: "/epi",
+    icon: <TbHexagonLetterE />,
     id: 2,
   },
   {
-    name: "Contrôle des EPI",
-    to: "/epi/checks",
-    icon: <TbTool />,
+    name: "Types d'EPI",
+    to: "/types",
+    icon: <TbList />,
     id: 3,
+  },
+  {
+    name: "Contrôle des EPI",
+    to: "/checks",
+    icon: <TbTool />,
+    id: 4,
   },
 ];

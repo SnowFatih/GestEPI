@@ -4,42 +4,62 @@ import { TbEdit, TbTrash } from "react-icons/tb";
 import { Button } from "@/components/molecules/Button";
 import { generateColumnHelper } from "@/components/molecules/DataTable/utils";
 import React from "react";
-import { EpiCheck } from "@/types/type";
-import { Typography } from "@/components/atoms/Typography";
+import { EPI, EpiCheck, EpiType, User } from "@/types/type";
 import { IconEPI } from "@/components/atoms/IconEPI";
+
+import { getStatusStyle, getStatusLabel } from "@/utils/statusStyle";
+import { getUserNameById } from "@/utils/getUserNameById";
+import { formatDateString } from "@/utils/date";
 
 export const configureColumns = (
   onEdit: (epiCheck: EpiCheck) => void,
-  onDelete: (epiCheck: EpiCheck) => void
+  onDelete: (epiCheck: EpiCheck) => void,
+  users: User[],
+  epi: EPI[],
+  epiTypes: EpiType[]
 ): ColumnDef<EpiCheck, any>[] => {
   const columnHelper = generateColumnHelper<EpiCheck>();
 
   const columns = [
-    // columnHelper.accessor("epiId", {
-    //   header: () => "Nom de l'équipement",
-    //   cell: (info) => (
-    //     <div className="w-24 h-24 items-center justify-center flex">
-    //       <IconEPI type={info.row.original.label} />
-    //     </div>
-    //   ),
-    //   enableSorting: false,
-    //   enableGlobalFilter: false,
-    // }),
     columnHelper.accessor("epiId", {
-      header: () => "Nom de l'équipement",
-      cell: (info) => info.getValue(),
+      header: () => "Équipement",
+      cell: (info) => {
+        const epiItem = epi.find((item) => item.id === info.getValue());
+        const epiType = epiTypes.find((type) => type.id === epiItem?.epiType);
+
+        return (
+          <div className="flex items-center gap-2 w-52">
+            {epiType && (
+              <>
+                <IconEPI type={epiType.label} width={30} height={30} />
+                <span>
+                  {epiType.label} [{epiItem?.innerId}]
+                </span>
+              </>
+            )}
+          </div>
+        );
+      },
     }),
     columnHelper.accessor("checkDate", {
       header: () => "Date de contrôle",
-      cell: (info) => info.getValue(),
+      cell: (info) => {
+        const rawDate = info.getValue();
+        const formattedDate = formatDateString(rawDate);
+        return <span>{formattedDate}</span>;
+      },
     }),
     columnHelper.accessor("checkStatus", {
       header: () => "État du contrôle",
-      cell: (info) => info.getValue(),
+      cell: (info) => (
+        <span className={getStatusStyle(info.getValue())}>
+          {getStatusLabel(info.getValue())}
+        </span>
+      ),
     }),
     columnHelper.accessor("userId", {
       header: () => "Utilisateur en charge du contrôle",
-      cell: (info) => info.getValue(),
+      cell: (info) => <span>{getUserNameById(users, info.getValue())}</span>,
     }),
     {
       id: "delete",

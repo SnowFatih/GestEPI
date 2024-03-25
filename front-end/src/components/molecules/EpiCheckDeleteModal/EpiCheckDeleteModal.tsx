@@ -5,6 +5,8 @@ import { Button } from "@/components/molecules/Button";
 import { Typography } from "@/components/atoms/Typography";
 
 import { EpiCheck } from "@/types/type";
+import { formatDateString } from "@/utils/date";
+import { getUserNameById } from "@/utils/getUserNameById";
 
 interface DeleteModalProps {
   isOpen: boolean;
@@ -37,8 +39,9 @@ export const EpiCheckDeleteModal: React.FC<DeleteModalProps> = ({
       </Typography>
       <Typography variant="paragraph" marginClass="my-4" align="center">
         Êtes-vous sûr de vouloir supprimer le contrôle du{" "}
-        <strong>{epiCheck.checkDate}</strong> réalisé par {epiCheck.userId} ?
+        <strong>{formatDateString(epiCheck.checkDate)}</strong> ?
       </Typography>
+
       <div className="flex justify-around gap-5">
         <Button label="Annuler" color="alert" fullWidth onClick={onClose} />
         <Button

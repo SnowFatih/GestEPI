@@ -128,7 +128,7 @@ export const Typography = ({
           color === "primary" && "text-primary-500",
           color === "secondary" && "text-secondary-500",
           color === "gray" && "text-gray-500",
-          color === "orange" && "text-orange-500",
+          color === "orange" && "text-[#fd9800]",
           color === "green" && "text-green-500",
           color === "red" && "text-red-500",
           color === "white" && "text-white",

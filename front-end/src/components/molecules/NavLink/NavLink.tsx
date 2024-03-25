@@ -28,8 +28,14 @@ export const NavLink: React.FC<NavLinkProps> = ({
         active && "bg-gray-100/80"
       )}
     >
-      <span className="text-xl">{icon}</span>
-      <Typography tag="p" weight={active ? "semibold" : undefined}>
+      <span className={classNames("text-xl", active && "text-[#fd9800]")}>
+        {icon}
+      </span>
+      <Typography
+        tag="p"
+        weight={active ? "semibold" : undefined}
+        color={active ? "orange" : undefined}
+      >
         {title}
       </Typography>
     </Link>

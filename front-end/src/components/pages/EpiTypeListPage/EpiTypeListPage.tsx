@@ -5,7 +5,7 @@ import { Button } from "@/components/molecules/Button";
 import { Typography } from "@/components/atoms/Typography";
 import { DataTable } from "@/components/molecules/DataTable";
 import { configureColumns } from "./tableDefinition";
-import { TbPlane, TbPlus } from "react-icons/tb";
+import { TbList, TbPlus } from "react-icons/tb";
 import { DashboardLayout } from "@/components/templates/DashboardLayout";
 
 import toast from "react-hot-toast";
@@ -81,9 +81,9 @@ export const EpiTypeListPage = () => {
     <>
       <DashboardLayout>
         <div className="mt-10 flex items-center m-auto gap-5 border rounded-full bg-white px-6 py-2">
-          <TbPlane size={30} />
+          <TbList size={30} />
           <Typography variant="h1" weight="semibold" align="center">
-            Liste des types d'équipements
+            Les types d'équipements
           </Typography>
         </div>
 

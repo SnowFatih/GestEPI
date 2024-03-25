@@ -4,7 +4,7 @@ import { TbEdit, TbTrash } from "react-icons/tb";
 import { Button } from "@/components/molecules/Button";
 import { generateColumnHelper } from "@/components/molecules/DataTable/utils";
 import React from "react";
-import { Avion, EpiType } from "@/types/type";
+import { EpiType } from "@/types/type";
 import { Typography } from "@/components/atoms/Typography";
 import { IconEPI } from "@/components/atoms/IconEPI";
 

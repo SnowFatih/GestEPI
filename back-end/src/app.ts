@@ -3,6 +3,8 @@ import cors from 'cors';
 import * as middlewares from './middlewares';
 import epiTypeController from './controller/epiTypeController';
 import epiCheckController from './controller/epiCheckController';
+import userController from './controller/userController';
+import epiListController from './controller/epiListController';
 
 
 
@@ -24,6 +26,8 @@ app.use(express.json());
 
 app.use('/types', epiTypeController);
 app.use('/checks', epiCheckController);
+app.use('/users', userController);
+app.use('/epi', epiListController);
 
 
 

@@ -5,6 +5,7 @@ export enum CheckFrequencyUnit {
 }
 
 
+
 export enum CheckStatus {
   CONFORME = 1,
   AREPARER = 2,
@@ -35,7 +36,7 @@ export interface EPI {
   model?: string;
   serialNumber?: string;
   innerId?: string;
-  type: EPIType;
+  epiType: number;
   size?: string;
   color?: string;
   purchaseDate?: string;
@@ -61,22 +62,6 @@ export enum UserType {
   ADMIN = 1,
   MANAGER = 2,
   USER = 3,
-}
-
-export interface Epi {
-  id: number;
-  brand: string;
-  model: string;
-  serialNumber: string;
-  innerId: string;
-  epiType: number;
-  size: string;
-  color: string;
-  purchaseDate: string;
-  manufactureDate: string;
-  inServiceDate: string;
-  checkFrequency: number;
-  checkFrequencyUnit: CheckFrequencyUnit;
 }
 
 

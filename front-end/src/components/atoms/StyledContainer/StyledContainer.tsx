@@ -11,7 +11,10 @@ export const StyledContainer: React.FC<Props> = ({ children, className }) => {
   return (
     <div
       className={twMerge(
-        classNames(" border border-gray-200 sm:rounded-lg bg-white", className)
+        classNames(
+          "border border-gray-200 sm:rounded-lg bg-white overflow-auto",
+          className
+        )
       )}
     >
       {children}
