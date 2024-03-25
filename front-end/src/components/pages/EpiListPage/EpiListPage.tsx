@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 import { EpiCheckCreateModal } from "@/components/molecules/EpiCheckCreateModal";
 import { EpiCheckDeleteModal } from "@/components/molecules/EpiCheckDeleteModal";
 import { EpiCheckEditModal } from "@/components/molecules/EpiCheckEditModal";
+import { EpiListCreateModal } from "@/components/molecules/EpiListCreateModal";
 
 export const EpiListPage = () => {
   const [epiChecks, setEpiChecks] = useState<EpiCheck[]>([]);
@@ -90,11 +91,9 @@ export const EpiListPage = () => {
     setModalState({ ...modalState, delete: true });
   };
 
-  const reloadEpiChecks = async (
-    message: string = "Action réalisée avec succès"
-  ) => {
+  const reloadEpi = async (message: string = "Action réalisée avec succès") => {
     try {
-      const response = await axios.get("http://localhost:5500/checks");
+      const response = await axios.get("http://localhost:5500/epi");
       setEpiChecks(response.data);
       toast.success(message, {
         duration: 4000,
@@ -121,7 +120,7 @@ export const EpiListPage = () => {
 
         <div className="flex self-end">
           <Button
-            label="Réaliser un contrôle"
+            label="Ajouter un EPI"
             fullWidth
             onClick={handleOpenCreateModal}
             marginClass="my-5"
@@ -161,15 +160,18 @@ export const EpiListPage = () => {
           onSuccess={() => reloadEpiChecks("Modification du contrôle")}
         />
       )}
+ */}
 
       {modalState.create && (
-        <EpiCheckCreateModal
+        <EpiListCreateModal
           isOpen={modalState.create}
           onClose={handleCloseModal}
           users={epiUsers}
-          onSuccess={() => reloadEpiChecks("Ajout d'un nouveau contrôle")}
+          onSuccess={() => reloadEpi("Ajout d'un nouveau contrôle")}
+          types={epiTypes}
+          epi={epiList}
         />
-      )} */}
+      )}
     </>
   );
 };

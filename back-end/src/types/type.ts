@@ -35,7 +35,7 @@ export interface EPI {
   model?: string;
   serialNumber?: string;
   innerId?: string;
-  epiTypeId: number;
+  epiType: number;
   size?: string;
   color?: string;
   purchaseDate?: string;

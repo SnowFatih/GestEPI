@@ -4,8 +4,6 @@ export enum CheckFrequencyUnit {
   MONTH = "month",
 }
 
-
-
 export enum CheckStatus {
   CONFORME = 1,
   AREPARER = 2,

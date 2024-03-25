@@ -52,7 +52,14 @@ export const configureColumns = (
     }),
     columnHelper.accessor("color", {
       header: () => "Couleur",
-      cell: (info) => info.getValue(),
+      cell: (info) => (
+        <div
+          style={{
+            backgroundColor: info.getValue(),
+          }}
+          className="rounded-full border border-black h-7 w-7"
+        />
+      ),
     }),
     columnHelper.accessor("purchaseDate", {
       header: () => "Date d'achat",

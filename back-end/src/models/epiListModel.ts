@@ -57,7 +57,7 @@ export const EpiListModel = {
         if (item === 'innerId') {
           query += `${item} = "${params[item]}"`;
         }
-        if (item === 'epiTypeId') {
+        if (item === 'epiType') {
           query += `${item} = "${params[item]}"`;
         }
         if (item === 'size') {
@@ -99,12 +99,12 @@ export const EpiListModel = {
     try {
       connection = await pool.getConnection();
       const query = `
-        INSERT INTO epi (id, brand, model, serialNumber, innerId, epiTypeId, size, color, purchaseDate, manufactureDate, inServiceDate, checkFrequency, checkFrequencyUnit)
+        INSERT INTO epi (id, brand, model, serialNumber, innerId, epiType, size, color, purchaseDate, manufactureDate, inServiceDate, checkFrequency, checkFrequencyUnit)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON DUPLICATE KEY UPDATE 
-        id=VALUES(id), brand=VALUES(brand), model=VALUES(model), serialNumber=VALUES(serialNumber), innerId=VALUES(innerId), epiTypeId=VALUES(epiTypeId), size=VALUES(size), color=VALUES(color), purchaseDate=VALUES(purchaseDate), manufactureDate=VALUES(manufactureDate), inServiceDate=VALUES(inServiceDate), checkFrequency=VALUES(checkFrequency), checkFrequencyUnit=VALUES(checkFrequencyUnit);
+        id=VALUES(id), brand=VALUES(brand), model=VALUES(model), serialNumber=VALUES(serialNumber), innerId=VALUES(innerId), epiType=VALUES(epiType), size=VALUES(size), color=VALUES(color), purchaseDate=VALUES(purchaseDate), manufactureDate=VALUES(manufactureDate), inServiceDate=VALUES(inServiceDate), checkFrequency=VALUES(checkFrequency), checkFrequencyUnit=VALUES(checkFrequencyUnit);
       `;
-      const params = [EpiList.id, EpiList.brand, EpiList.model, EpiList.serialNumber, EpiList.innerId, EpiList.epiTypeId, EpiList.size, EpiList.color, EpiList.purchaseDate, EpiList.manufactureDate, EpiList.inServiceDate, EpiList.checkFrequency, EpiList.checkFrequencyUnit];
+      const params = [EpiList.id, EpiList.brand, EpiList.model, EpiList.serialNumber, EpiList.innerId, EpiList.epiType, EpiList.size, EpiList.color, EpiList.purchaseDate, EpiList.manufactureDate, EpiList.inServiceDate, EpiList.checkFrequency, EpiList.checkFrequencyUnit];
       const result = await connection.query(query, params);
       return result;
     } catch (error) {

@@ -7,7 +7,7 @@ import { FaTimes } from "react-icons/fa";
 type Props = {
   isOpen: boolean;
   children?: React.ReactNode | React.ReactNode[];
-  maxWidth?: "md" | "lg" | "xl" | "full";
+  maxWidth?: "md" | "lg" | "xl" | "xxl" | "full";
   onCloseClick?: () => void;
   closeOnOutsideClick?: boolean;
 };
@@ -33,7 +33,7 @@ export const BaseModal: React.FC<Props> = ({
 
   return (
     <div
-      className="fixed inset-0 bg-gray-400/80 backdrop-blur-[1px] flex justify-center items-center z-[99990]"
+      className="fixed inset-0 bg-gray-400/80 backdrop-blur-[1px] flex justify-center items-center z-[99990] "
       onClick={() => closeOnOutsideClick && onCloseClick()}
     >
       <div
@@ -44,6 +44,7 @@ export const BaseModal: React.FC<Props> = ({
             "max-w-md": maxWidth === "md",
             "max-w-lg": maxWidth === "lg",
             "min-w-[550px]": maxWidth === "xl",
+            "min-w-[700px]": maxWidth === "xxl",
             "w-full": maxWidth === "full",
           }
         )}
@@ -57,7 +58,7 @@ export const BaseModal: React.FC<Props> = ({
             <FaTimes />
           </span>
         )}
-        {children}
+        <div className=" max-h-[70vh] overflow-auto">{children}</div>
       </div>
     </div>
   );

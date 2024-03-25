@@ -4,7 +4,10 @@ import React, { Fragment } from "react";
 import { Logo } from "@/components/atoms/Logo";
 import { NavLink } from "@/components/molecules/NavLink";
 import { NavMenu } from "@/components/molecules/NavMenu";
-import { SIDEBAR_LINKS } from "@/containers/App/Router";
+import {
+  SIDEBAR_FIRST_LINKS,
+  SIDEBAR_SECOND_LINKS,
+} from "@/containers/App/Router";
 import { TbX } from "react-icons/tb";
 
 export type SidebarLink = {
@@ -32,7 +35,8 @@ export const SideNavigation = ({
   isAdmin = false,
   navigationGroup,
 }: Props) => {
-  const links = getSidebarLinks(SIDEBAR_LINKS, isAdmin);
+  const links = getSidebarLinks(SIDEBAR_FIRST_LINKS, isAdmin);
+  const secondLinks = getSidebarLinks(SIDEBAR_SECOND_LINKS, isAdmin);
   return (
     <>
       <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -107,7 +111,11 @@ export const SideNavigation = ({
           </div>
         </Dialog>
       </Transition.Root>
-      <NavMenu links={links} currentPath={navigationGroup} />
+      <NavMenu
+        links={links}
+        secondLinks={secondLinks}
+        currentPath={navigationGroup}
+      />
     </>
   );
 };

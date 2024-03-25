@@ -30,7 +30,7 @@ export const Router = () => {
   );
 };
 
-export const SIDEBAR_LINKS: SidebarLink[] = [
+export const SIDEBAR_FIRST_LINKS: SidebarLink[] = [
   {
     name: "Page d'accueil",
     to: "/",
@@ -44,15 +44,18 @@ export const SIDEBAR_LINKS: SidebarLink[] = [
     id: 2,
   },
   {
-    name: "Types d'EPI",
-    to: "/types",
-    icon: <TbList />,
-    id: 3,
-  },
-  {
     name: "Contrôle des EPI",
     to: "/checks",
     icon: <TbTool />,
-    id: 4,
+    id: 3,
+  },
+];
+
+export const SIDEBAR_SECOND_LINKS: SidebarLink[] = [
+  {
+    name: "Types d'EPI",
+    to: "/types",
+    icon: <TbList />,
+    id: 1,
   },
 ];
