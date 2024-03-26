@@ -5,7 +5,6 @@ import { Button } from "@/components/molecules/Button";
 import { generateColumnHelper } from "@/components/molecules/DataTable/utils";
 import React from "react";
 import { EpiType } from "@/types/type";
-import { Typography } from "@/components/atoms/Typography";
 import { IconEPI } from "@/components/atoms/IconEPI";
 
 export const configureColumns = (
@@ -19,7 +18,7 @@ export const configureColumns = (
       header: () => "Illustration",
       cell: (info) => (
         <div className="w-24 h-24 items-center justify-center flex">
-          <IconEPI type={info.row.original.label} />
+          <IconEPI type={info.row.original.label} width={40} />
         </div>
       ),
       enableSorting: false,

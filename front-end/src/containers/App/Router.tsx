@@ -8,12 +8,14 @@ import { EpiTypeListPage } from "@/components/pages/EpiTypeListPage";
 import { SidebarLink } from "@/components/molecules/SideNavigation";
 import { EpiCheckListPage } from "@/components/pages/EpiCheckListPage";
 import { EpiListPage } from "@/components/pages/EpiListPage";
+import { EpiDetailsPage } from "@/components/pages/EpiDetailsPage";
 
 export const Router = () => {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/epi" element={<EpiListPage />} />
+      <Route path="/epi/details/:epiId" element={<EpiDetailsPage />} />
       <Route path="/types" element={<EpiTypeListPage />} />
       <Route path="/checks" element={<EpiCheckListPage />} />
 

@@ -5,11 +5,13 @@ import harnaisSrc from "@/assets/icons/harnais.png";
 import mousquetonSrc from "@/assets/icons/mousqueton.png";
 import sangleSrc from "@/assets/icons/sangle.png";
 import systemeassurageSrc from "@/assets/icons/systemeassurage.png";
+import classNames from "classnames";
 
 export interface Props {
   type: string;
   width?: number;
   height?: number;
+  className?: string;
 }
 
 const iconSrc: { [key: string]: string } = {
@@ -21,7 +23,12 @@ const iconSrc: { [key: string]: string } = {
   "Système d'assurage": systemeassurageSrc,
 };
 
-export const IconEPI = ({ type, width, height }: Props) => {
+export const IconEPI = ({
+  type,
+  width = 150,
+  height = 50,
+  className,
+}: Props) => {
   const src = iconSrc[type];
 
   if (!src) {
@@ -32,7 +39,7 @@ export const IconEPI = ({ type, width, height }: Props) => {
     <img
       src={src}
       alt={`${type} Icon`}
-      className="h-full"
+      className={classNames("h-full", className)}
       width={width}
       height={height}
     />

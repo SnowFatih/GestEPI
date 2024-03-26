@@ -51,14 +51,23 @@ export const EpiListCreateModal: React.FC<ModalProps> = ({
 }) => {
   const [newEpiList, setNewEpiList] = useState(initialState);
 
-  const epiOptions = types.map((epiItem) => ({
+  const epiOptions = epi.map((epiItem) => ({
     id: epiItem.id,
-    name: epiItem.label,
+    name: `${getEpiTypeName(types, epiItem.id)} [${epiItem.innerId}] | ${
+      epiItem.brand
+    } ${epiItem.model}`,
   }));
 
   const handleInputChange = (e: any) => {
-    const { name, value } = e.target;
-    setNewEpiList({ ...newEpiList, [name]: value });
+    const { name, value, type, checked } = e.target;
+    if (type === "radio") {
+      setNewEpiList({ ...newEpiList, [name]: value });
+    } else {
+      setNewEpiList({
+        ...newEpiList,
+        [name]: type === "checkbox" ? checked : value,
+      });
+    }
   };
 
   const handleSubmit = async (e: any) => {
@@ -92,6 +101,7 @@ export const EpiListCreateModal: React.FC<ModalProps> = ({
               name="brand"
               value={newEpiList.brand}
               onChange={handleInputChange}
+              required
             />
           </span>
           <span>
@@ -103,6 +113,7 @@ export const EpiListCreateModal: React.FC<ModalProps> = ({
               name="model"
               value={newEpiList.model}
               onChange={handleInputChange}
+              required
             />
           </span>
         </div>
@@ -116,6 +127,7 @@ export const EpiListCreateModal: React.FC<ModalProps> = ({
               name="serialNumber"
               value={newEpiList.serialNumber}
               onChange={handleInputChange}
+              required
             />
           </span>
           <span>
@@ -127,6 +139,7 @@ export const EpiListCreateModal: React.FC<ModalProps> = ({
               name="innerId"
               value={newEpiList.innerId}
               onChange={handleInputChange}
+              required
             />
           </span>
         </div>

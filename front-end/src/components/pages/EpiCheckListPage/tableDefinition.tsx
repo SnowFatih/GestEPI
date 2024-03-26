@@ -10,6 +10,7 @@ import { IconEPI } from "@/components/atoms/IconEPI";
 import { getStatusStyle, getStatusLabel } from "@/utils/statusStyle";
 import { getUserNameById } from "@/utils/getUserNameById";
 import { formatDateString } from "@/utils/date";
+import { getEpiTypeName } from "@/utils/getEpiTypeName";
 
 export const configureColumns = (
   onEdit: (epiCheck: EpiCheck) => void,
@@ -25,18 +26,18 @@ export const configureColumns = (
       header: () => "Équipement",
       cell: (info) => {
         const epiItem = epi.find((item) => item.id === info.getValue());
-        const epiType = epiTypes.find((type) => type.id === epiItem?.epiType);
-
         return (
-          <div className="flex items-center gap-2 w-52">
-            {epiType && (
-              <>
-                <IconEPI type={epiType.label} width={30} height={30} />
-                <span>
-                  {epiType.label} [{epiItem?.innerId}]
-                </span>
-              </>
-            )}
+          <div className="flex items-center gap-1 w-34">
+            <>
+              <IconEPI
+                type={getEpiTypeName(epiTypes, info.getValue())}
+                width={30}
+                height={30}
+              />
+              <span>
+                {getEpiTypeName(epiTypes, info.getValue())} [{epiItem?.innerId}]
+              </span>
+            </>
           </div>
         );
       },

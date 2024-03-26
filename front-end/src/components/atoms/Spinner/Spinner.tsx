@@ -1,13 +1,21 @@
-import React from 'react';
+import React from "react";
 
-export const Spinner = ({ reverse = false, noMargin = false }: { reverse?: boolean; noMargin?: boolean }) => {
-  const fill = reverse ? 'fill-white' : 'fill-sky-500';
-  const text = reverse ? 'text-white/25' : 'text-slate-500/25';
+export const Spinner = ({
+  reverse = false,
+  noMargin = false,
+}: {
+  reverse?: boolean;
+  noMargin?: boolean;
+}) => {
+  const fill = reverse ? "fill-white" : "fill-orange-300";
+  const text = reverse ? "text-white/25" : "text-slate-500/25";
   return (
     <svg
       data-testid="spinner"
       role="status"
-      className={`inline w-4 h-4 ${noMargin ? '' : 'mr-2'} ${text} animate-spin ${fill}`}
+      className={`inline w-20 h-20 ${
+        noMargin ? "" : "mr-2"
+      } ${text} animate-spin ${fill}`}
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
