@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import axios from "axios";
 import { BaseModal } from "@/components/molecules/BaseModal";
 import { Button } from "@/components/molecules/Button";
 import { Typography } from "@/components/atoms/Typography";
+
+import axios from "axios";
 import { CheckFrequencyUnit, EPI, EpiType } from "@/types/type";
 import { getEpiTypeName } from "@/utils/getEpiTypeName";
 import classNames from "classnames";
-import { TbPlus, TbX } from "react-icons/tb";
+import { TbPlus } from "react-icons/tb";
 
 const basicColors = [
   { name: "Rouge", value: "#ff0000" },
@@ -35,19 +36,25 @@ const initialState = {
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSuccess: () => void;
-  types: EpiType[];
+  epiList: EPI;
   epi: EPI[];
+  types: EpiType[];
+  onSuccess: () => void;
 }
 
-export const EpiListCreateModal: React.FC<ModalProps> = ({
+export const EpiListEditModal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
-  onSuccess,
-  types,
   epi,
+  epiList,
+  types,
+  onSuccess,
 }) => {
-  const [newEpiList, setNewEpiList] = useState(initialState);
+  const [editEpiList, setEditEpiList] = useState<EPI>(epiList);
+
+  useEffect(() => {
+    setEditEpiList(epiList);
+  }, [epiList]);
 
   const epiOptions = epi.map((epiItem) => ({
     id: epiItem.id,
@@ -59,36 +66,35 @@ export const EpiListCreateModal: React.FC<ModalProps> = ({
   const handleInputChange = (e: any) => {
     const { name, value, type, checked } = e.target;
     if (type === "radio") {
-      setNewEpiList({ ...newEpiList, [name]: value });
+      setEditEpiList({ ...editEpiList, [name]: value });
     } else {
-      setNewEpiList({
-        ...newEpiList,
+      setEditEpiList({
+        ...editEpiList,
         [name]: type === "checkbox" ? checked : value,
       });
     }
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:5500/epi",
-        newEpiList
-      );
-      console.log("Nouvel Epi ajouté:", response.data);
-      onClose();
+      await axios.post(`http://localhost:5500/epi/`, editEpiList);
       onSuccess();
+      onClose();
     } catch (error) {
-      console.error("Erreur lors de l'ajout du nouvel EpiList:", error);
+      console.error("Erreur lors de la mise à jour de l'epiList:", error);
     }
   };
 
   return (
-    <BaseModal isOpen={isOpen} maxWidth="xxl" onCloseClick={onClose}>
+    <BaseModal isOpen={isOpen} maxWidth="xl" onCloseClick={onClose}>
       <Typography marginClass="mt-5" align="center" variant="h2">
-        Ajouter un nouveau EPI :
+        Modification des informations de l'EPI:
       </Typography>
-      <form className="flex flex-col gap-4 gap-y-8 p-4" onSubmit={handleSubmit}>
+      <Typography variant="h3" align="center" weight="semibold">
+        {editEpiList?.checkFrequency}
+      </Typography>
+      <form className="flex flex-col gap-4 p-4" onSubmit={handleSubmit}>
         <div className="gap-5 grid grid-cols-2">
           <span>
             <Typography variant="paragraph" marginClass="mb-1">
@@ -97,7 +103,7 @@ export const EpiListCreateModal: React.FC<ModalProps> = ({
             <input
               type="text"
               name="brand"
-              value={newEpiList.brand}
+              value={editEpiList.brand}
               onChange={handleInputChange}
               required
             />
@@ -109,12 +115,13 @@ export const EpiListCreateModal: React.FC<ModalProps> = ({
             <input
               type="text"
               name="model"
-              value={newEpiList.model}
+              value={editEpiList.model}
               onChange={handleInputChange}
               required
             />
           </span>
         </div>
+
         <div className="gap-5 grid grid-cols-2">
           <span>
             <Typography variant="paragraph" marginClass="mb-1">
@@ -123,7 +130,7 @@ export const EpiListCreateModal: React.FC<ModalProps> = ({
             <input
               type="text"
               name="serialNumber"
-              value={newEpiList.serialNumber}
+              value={editEpiList.serialNumber}
               onChange={handleInputChange}
               required
             />
@@ -135,7 +142,7 @@ export const EpiListCreateModal: React.FC<ModalProps> = ({
             <input
               type="text"
               name="innerId"
-              value={newEpiList.innerId}
+              value={editEpiList.innerId}
               onChange={handleInputChange}
               required
             />
@@ -147,7 +154,7 @@ export const EpiListCreateModal: React.FC<ModalProps> = ({
           </Typography>
           <select
             name="epiType"
-            value={newEpiList.epiType}
+            value={editEpiList.epiType}
             onChange={handleInputChange}
             required
           >
@@ -170,7 +177,7 @@ export const EpiListCreateModal: React.FC<ModalProps> = ({
                 type="number"
                 name="size"
                 min={0}
-                value={newEpiList.size}
+                value={editEpiList.size}
                 onChange={handleInputChange}
                 className="w-20"
               />
@@ -191,23 +198,23 @@ export const EpiListCreateModal: React.FC<ModalProps> = ({
                     backgroundColor: color.value,
                   }}
                   className={classNames("w-8 h-8 rounded-full cursor-pointer", {
-                    "border-2 border-black": newEpiList.color === color.value,
+                    "border-2 border-black": editEpiList.color === color.value,
                   })}
                   onClick={() =>
-                    setNewEpiList({ ...newEpiList, color: color.value })
+                    setEditEpiList({ ...editEpiList, color: color.value })
                   }
                   title={color.name}
                 />
               ))}
               <label
                 style={{
-                  backgroundColor: newEpiList.color,
+                  backgroundColor: editEpiList.color,
                 }}
                 className={classNames(
                   "w-8 h-8 flex items-center justify-center border-2 rounded-full cursor-pointer",
-                  newEpiList.color
+                  editEpiList.color
                     ? `border-black border-solid ${
-                        basicColors.some((c) => c.value === newEpiList.color)
+                        basicColors.some((c) => c.value === editEpiList.color)
                           ? "border-dashed"
                           : `border-solid`
                       }`
@@ -217,15 +224,15 @@ export const EpiListCreateModal: React.FC<ModalProps> = ({
                 <input
                   type="color"
                   className="w-full h-full opacity-0 cursor-pointer"
-                  value={newEpiList.color}
+                  value={editEpiList.color}
                   onChange={handleInputChange}
                   name="color"
                 />
                 <div
                   className={classNames(
                     "flex justify-center text-center relative",
-                    newEpiList.color &&
-                      !basicColors.some((c) => c.value === newEpiList.color) &&
+                    editEpiList.color &&
+                      !basicColors.some((c) => c.value === editEpiList.color) &&
                       "2px solid black"
                   )}
                 >
@@ -235,6 +242,7 @@ export const EpiListCreateModal: React.FC<ModalProps> = ({
             </div>
           </span>
         </div>
+
         <div className="gap-3 grid grid-cols-3">
           <span>
             <Typography variant="paragraph" marginClass="mb-1">
@@ -243,7 +251,7 @@ export const EpiListCreateModal: React.FC<ModalProps> = ({
             <input
               type="date"
               name="purchaseDate"
-              value={newEpiList.purchaseDate}
+              value={editEpiList.purchaseDate}
               onChange={handleInputChange}
             />
           </span>
@@ -255,7 +263,7 @@ export const EpiListCreateModal: React.FC<ModalProps> = ({
             <input
               type="date"
               name="manufactureDate"
-              value={newEpiList.manufactureDate}
+              value={editEpiList.manufactureDate}
               onChange={handleInputChange}
             />
           </span>
@@ -266,11 +274,12 @@ export const EpiListCreateModal: React.FC<ModalProps> = ({
             <input
               type="date"
               name="inServiceDate"
-              value={newEpiList.inServiceDate}
+              value={editEpiList.inServiceDate}
               onChange={handleInputChange}
             />
           </span>
         </div>
+
         <span>
           <Typography variant="paragraph" marginClass="mb-1">
             Fréquence de contrôle*:
@@ -280,7 +289,7 @@ export const EpiListCreateModal: React.FC<ModalProps> = ({
             <input
               type="number"
               name="checkFrequency"
-              value={newEpiList.checkFrequency}
+              value={editEpiList.checkFrequency}
               onChange={handleInputChange}
               required
               min={0}
@@ -295,11 +304,11 @@ export const EpiListCreateModal: React.FC<ModalProps> = ({
                   name="checkFrequencyUnit"
                   value={CheckFrequencyUnit.YEAR}
                   checked={
-                    newEpiList.checkFrequencyUnit === CheckFrequencyUnit.YEAR
+                    editEpiList.checkFrequencyUnit === CheckFrequencyUnit.YEAR
                   }
                   onChange={handleInputChange}
                 />
-                par an{newEpiList.checkFrequency > 1 && "s"}
+                par an{editEpiList.checkFrequency > 1 && "s"}
               </label>
               <label className="flex items-center gap-2 ">
                 <input
@@ -307,7 +316,7 @@ export const EpiListCreateModal: React.FC<ModalProps> = ({
                   name="checkFrequencyUnit"
                   value={CheckFrequencyUnit.MONTH}
                   checked={
-                    newEpiList.checkFrequencyUnit === CheckFrequencyUnit.MONTH
+                    editEpiList.checkFrequencyUnit === CheckFrequencyUnit.MONTH
                   }
                   onChange={handleInputChange}
                 />
@@ -319,7 +328,7 @@ export const EpiListCreateModal: React.FC<ModalProps> = ({
 
         <div className="flex gap-5 justify-around mt-4">
           <Button label="Annuler" color="alert" fullWidth onClick={onClose} />
-          <Button type="submit" label="Ajouter" fullWidth />
+          <Button type="submit" label="Confirmer" fullWidth />
         </div>
       </form>
     </BaseModal>

@@ -18,7 +18,7 @@ export const configureColumns = (
       header: () => "Illustration",
       cell: (info) => (
         <div className="w-24 h-24 items-center justify-center flex">
-          <IconEPI type={info.row.original.label} width={40} />
+          <IconEPI type={info.row.original.label} width={150} height={40} />
         </div>
       ),
       enableSorting: false,

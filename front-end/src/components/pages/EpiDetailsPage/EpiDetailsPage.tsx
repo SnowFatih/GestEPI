@@ -291,12 +291,12 @@ export const EpiDetailsPage = () => {
                           </div>
                           <div className="flex flex-col gap-2">
                             <div className="mt-5 flex justify-center sm:mt-0 gap-2">
-                              {/* <Button
+                              <Button
                                 onClick={handleOpenDeleteModal}
                                 icon={<TbTrash size={17} />}
                                 label="Supprimer"
                                 color="alert"
-                              /> */}
+                              />
                               <Button
                                 onClick={() => console.log("Modifier")}
                                 icon={<TbEdit size={17} />}

@@ -10,8 +10,8 @@ import { getEpiTypeName } from "@/utils/getEpiTypeName";
 
 export const configureColumns = (
   onDelete: (epiList: EPI) => void,
-  epiTypes: EpiType[],
-  epi: EPI[]
+  onEdit: (epiList: EPI) => void,
+  epiTypes: EpiType[]
 ): ColumnDef<EPI, any>[] => {
   const navigate = useNavigate();
   const columnHelper = generateColumnHelper<EPI>();
@@ -58,6 +58,20 @@ export const configureColumns = (
           onClick={() => navigate(`/epi/details/${info.row.original.id}`)}
           icon={<TbEdit size={17} />}
           label="Voir"
+          color="primary"
+        />
+      ),
+      enableSorting: false,
+      enableGlobalFilter: false,
+    },
+    {
+      id: "edit",
+      header: () => "Modification",
+      cell: (info: any) => (
+        <Button
+          onClick={() => onEdit(info.row.original)}
+          icon={<TbEdit size={17} />}
+          label="Modifier"
           color="primary"
         />
       ),

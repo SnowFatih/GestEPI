@@ -12,16 +12,18 @@ import toast from "react-hot-toast";
 
 import { EpiListCreateModal } from "@/components/molecules/EpiListCreateModal";
 import { EpiListDeleteModal } from "@/components/molecules/EpiListDeleteModal";
+import { EpiTypeEditModal } from "@/components/molecules/EpiTypeEditModal";
+import { EpiListEditModal } from "@/components/molecules/EpiListEditModal";
 
 export const EpiListPage = () => {
   const [epiList, setEpiList] = useState<EPI[]>([]);
-  const [epiUsers, setUsers] = useState<User[]>([]);
   const [epiTypes, setEpiTypes] = useState<EpiType[]>([]);
   const [modalState, setModalState] = useState({
     create: false,
     edit: false,
     delete: false,
   });
+  const [epiUsers, setUsers] = useState<User[]>([]);
   const [selectedEpiList, setSelectedEpiList] = useState(null as EPI | null);
 
   useEffect(() => {
@@ -66,6 +68,11 @@ export const EpiListPage = () => {
   const handleCloseModal = () => {
     setModalState({ create: false, edit: false, delete: false });
     setSelectedEpiList(null);
+  };
+
+  const handleOpenEditModal = (epiList: EPI) => {
+    setSelectedEpiList(epiList);
+    setModalState({ ...modalState, edit: true });
   };
 
   const handleOpenDeleteModal = (epiList: EPI) => {
@@ -114,7 +121,11 @@ export const EpiListPage = () => {
           displayTotalNumber
           enableGlobalSearch
           data={epiList}
-          columns={configureColumns(handleOpenDeleteModal, epiTypes, epiList)}
+          columns={configureColumns(
+            handleOpenDeleteModal,
+            handleOpenEditModal,
+            epiTypes
+          )}
           enablePagination
         />
       </DashboardLayout>
@@ -129,11 +140,21 @@ export const EpiListPage = () => {
         />
       )}
 
+      {selectedEpiList && (
+        <EpiListEditModal
+          isOpen={modalState.edit}
+          onClose={handleCloseModal}
+          epi={epiList}
+          types={epiTypes}
+          onSuccess={() => reloadEpi("Modification d'un EPI")}
+          epiList={selectedEpiList}
+        />
+      )}
+
       {modalState.create && (
         <EpiListCreateModal
           isOpen={modalState.create}
           onClose={handleCloseModal}
-          users={epiUsers}
           onSuccess={() => reloadEpi("Ajout d'un nouveau EPI")}
           types={epiTypes}
           epi={epiList}
