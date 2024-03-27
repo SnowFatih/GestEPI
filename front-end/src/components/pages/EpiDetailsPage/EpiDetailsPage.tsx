@@ -35,6 +35,7 @@ import { formatDateString } from "@/utils/date";
 import { getUserNameById } from "@/utils/getUserNameById";
 import { EpiListDeleteModal } from "@/components/molecules/EpiListDeleteModal";
 import toast from "react-hot-toast";
+import { EpiListEditModal } from "@/components/molecules/EpiListEditModal";
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
@@ -49,7 +50,8 @@ export const EpiDetailsPage = () => {
   const [epiTypes, setEpiTypes] = useState<EpiType[]>([]);
   const [epiUsers, setUsers] = useState<User[]>([]);
   const navigate = useNavigate();
-  const [modalState, setModalState] = useState({ delete: false });
+
+  const [modalState, setModalState] = useState({ delete: false, edit: false });
 
   useEffect(() => {
     const fetchEpiDetails = async () => {
@@ -228,8 +230,13 @@ export const EpiDetailsPage = () => {
     setModalState({ ...modalState, delete: true });
   };
 
+  const handleOpenEditModal = () => {
+    // setSelectedEpiList(epiList);
+    setModalState({ ...modalState, edit: true });
+  };
+
   const handleCloseModal = () => {
-    setModalState({ delete: false });
+    setModalState({ delete: false, edit: false });
   };
 
   const afterDeletionSuccess = async () => {
@@ -238,6 +245,23 @@ export const EpiDetailsPage = () => {
       position: "bottom-right",
     });
     navigate(`/epi`);
+  };
+
+  const reloadEpi = async (message: string = "Action réalisée avec succès") => {
+    try {
+      const response = await axios.get(`http://localhost:5500/epi?id=${epiId}`);
+      setEpi(response.data[0]);
+      toast.success(message, {
+        duration: 4000,
+        position: "bottom-right",
+      });
+    } catch (error) {
+      console.error("Erreur lors du rechargement de l'EPI:", error);
+      toast.error("Erreur lors du rechargement de l'EPI", {
+        duration: 4000,
+        position: "bottom-right",
+      });
+    }
   };
 
   return (
@@ -298,7 +322,7 @@ export const EpiDetailsPage = () => {
                                 color="alert"
                               />
                               <Button
-                                onClick={() => console.log("Modifier")}
+                                onClick={handleOpenEditModal}
                                 icon={<TbEdit size={17} />}
                                 label="Modifier"
                                 color="primary"
@@ -455,6 +479,17 @@ export const EpiDetailsPage = () => {
           </footer>
         </div>
       </DashboardLayout>
+
+      {modalState.edit && (
+        <EpiListEditModal
+          isOpen={modalState.edit}
+          onClose={handleCloseModal}
+          epi={epi}
+          epiTypes={epiTypes}
+          onSuccess={() => reloadEpi("Modification d'un EPI")}
+          epiList={epiList}
+        />
+      )}
 
       {modalState.delete && epi && (
         <EpiListDeleteModal

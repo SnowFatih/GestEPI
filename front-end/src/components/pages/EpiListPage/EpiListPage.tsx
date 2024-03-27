@@ -12,7 +12,6 @@ import toast from "react-hot-toast";
 
 import { EpiListCreateModal } from "@/components/molecules/EpiListCreateModal";
 import { EpiListDeleteModal } from "@/components/molecules/EpiListDeleteModal";
-import { EpiTypeEditModal } from "@/components/molecules/EpiTypeEditModal";
 import { EpiListEditModal } from "@/components/molecules/EpiListEditModal";
 
 export const EpiListPage = () => {
@@ -23,7 +22,6 @@ export const EpiListPage = () => {
     edit: false,
     delete: false,
   });
-  const [epiUsers, setUsers] = useState<User[]>([]);
   const [selectedEpiList, setSelectedEpiList] = useState(null as EPI | null);
 
   useEffect(() => {
@@ -37,17 +35,6 @@ export const EpiListPage = () => {
       }
     };
     fetchEpiList();
-
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get("http://localhost:5500/users");
-        setUsers(response.data);
-        console.log("Users récupérés:", response.data);
-      } catch (error) {
-        console.error("Erreur lors de la récupération des users");
-      }
-    };
-    fetchUsers();
 
     const fetchEpiTypes = async () => {
       try {
@@ -144,10 +131,10 @@ export const EpiListPage = () => {
         <EpiListEditModal
           isOpen={modalState.edit}
           onClose={handleCloseModal}
-          epi={epiList}
-          types={epiTypes}
+          epi={selectedEpiList}
+          epiTypes={epiTypes}
           onSuccess={() => reloadEpi("Modification d'un EPI")}
-          epiList={selectedEpiList}
+          epiList={epiList}
         />
       )}
 
@@ -156,8 +143,8 @@ export const EpiListPage = () => {
           isOpen={modalState.create}
           onClose={handleCloseModal}
           onSuccess={() => reloadEpi("Ajout d'un nouveau EPI")}
-          types={epiTypes}
-          epi={epiList}
+          epiTypes={epiTypes}
+          epiList={epiList}
         />
       )}
     </>

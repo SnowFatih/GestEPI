@@ -36,9 +36,9 @@ const initialState = {
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  epiList: EPI;
-  epi: EPI[];
-  types: EpiType[];
+  epi: EPI;
+  epiList: EPI[];
+  epiTypes: EpiType[];
   onSuccess: () => void;
 }
 
@@ -47,18 +47,18 @@ export const EpiListEditModal: React.FC<ModalProps> = ({
   onClose,
   epi,
   epiList,
-  types,
+  epiTypes,
   onSuccess,
 }) => {
-  const [editEpiList, setEditEpiList] = useState<EPI>(epiList);
+  const [editEpiList, setEditEpiList] = useState<EPI>(epi);
 
   useEffect(() => {
-    setEditEpiList(epiList);
-  }, [epiList]);
+    setEditEpiList(epi);
+  }, [epi]);
 
-  const epiOptions = epi.map((epiItem) => ({
+  const epiOptions = epiList.map((epiItem) => ({
     id: epiItem.id,
-    name: `${getEpiTypeName(types, epiItem.id)} [${epiItem.innerId}] | ${
+    name: `${getEpiTypeName(epiTypes, epiItem.id)} [${epiItem.innerId}] | ${
       epiItem.brand
     } ${epiItem.model}`,
   }));
@@ -159,9 +159,9 @@ export const EpiListEditModal: React.FC<ModalProps> = ({
             required
           >
             <option value="">Sélectionnez un type d'EPI</option>
-            {epiOptions.map((option) => (
-              <option key={option.id} value={option.id}>
-                {option.name}
+            {epiTypes.map((type) => (
+              <option key={type.id} value={type.id}>
+                {type.label}
               </option>
             ))}
           </select>

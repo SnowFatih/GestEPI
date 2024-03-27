@@ -36,22 +36,22 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
-  types: EpiType[];
-  epi: EPI[];
+  epiTypes: EpiType[];
+  epiList: EPI[];
 }
 
 export const EpiListCreateModal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
   onSuccess,
-  types,
-  epi,
+  epiTypes,
+  epiList,
 }) => {
   const [newEpiList, setNewEpiList] = useState(initialState);
 
-  const epiOptions = epi.map((epiItem) => ({
+  const epiOptions = epiList.map((epiItem) => ({
     id: epiItem.id,
-    name: `${getEpiTypeName(types, epiItem.id)} [${epiItem.innerId}] | ${
+    name: `${getEpiTypeName(epiTypes, epiItem.id)} [${epiItem.innerId}] | ${
       epiItem.brand
     } ${epiItem.model}`,
   }));
