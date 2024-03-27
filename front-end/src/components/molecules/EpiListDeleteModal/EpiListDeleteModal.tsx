@@ -5,8 +5,6 @@ import { Button } from "@/components/molecules/Button";
 import { Typography } from "@/components/atoms/Typography";
 
 import { EPI, EpiType } from "@/types/type";
-import { formatDateString } from "@/utils/date";
-import { getUserNameById } from "@/utils/getUserNameById";
 import { getEpiTypeName } from "@/utils/getEpiTypeName";
 
 interface DeleteModalProps {
@@ -49,8 +47,15 @@ export const EpiListDeleteModal: React.FC<DeleteModalProps> = ({
       </Typography>
 
       <div className="flex justify-around gap-5">
-        <Button label="Annuler" color="alert" fullWidth onClick={onClose} />
         <Button
+          type="button"
+          label="Annuler"
+          color="alert"
+          fullWidth
+          onClick={onClose}
+        />
+        <Button
+          type="submit"
           label="Supprimer"
           color="primary"
           fullWidth

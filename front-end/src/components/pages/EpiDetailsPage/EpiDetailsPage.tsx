@@ -233,22 +233,11 @@ export const EpiDetailsPage = () => {
   };
 
   const afterDeletionSuccess = async () => {
-    try {
-      // Rafraîchir la liste des EPIs
-      const response = await axios.get("http://localhost:5500/epi");
-      setEpiList(response.data);
-      toast.success("Suppression réussie", {
-        duration: 4000,
-        position: "bottom-right",
-      });
-      navigate(`/epi`); // Rediriger l'utilisateur
-    } catch (error) {
-      console.error("Erreur lors du rechargement des EPIs:", error);
-      toast.error("Erreur lors du rechargement des EPIs", {
-        duration: 4000,
-        position: "bottom-right",
-      });
-    }
+    toast.success("Suppression réussie", {
+      duration: 4000,
+      position: "bottom-right",
+    });
+    navigate(`/epi`);
   };
 
   return (
@@ -302,12 +291,12 @@ export const EpiDetailsPage = () => {
                           </div>
                           <div className="flex flex-col gap-2">
                             <div className="mt-5 flex justify-center sm:mt-0 gap-2">
-                              <Button
+                              {/* <Button
                                 onClick={handleOpenDeleteModal}
                                 icon={<TbTrash size={17} />}
                                 label="Supprimer"
                                 color="alert"
-                              />
+                              /> */}
                               <Button
                                 onClick={() => console.log("Modifier")}
                                 icon={<TbEdit size={17} />}
@@ -467,7 +456,7 @@ export const EpiDetailsPage = () => {
         </div>
       </DashboardLayout>
 
-      {modalState.delete && (
+      {modalState.delete && epi && (
         <EpiListDeleteModal
           isOpen={modalState.delete}
           onClose={handleCloseModal}

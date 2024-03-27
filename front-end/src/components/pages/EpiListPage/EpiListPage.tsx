@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { EPI, EpiCheck, EpiType, User } from "@/types/type";
+import { EPI, EpiType, User } from "@/types/type";
 import { Button } from "@/components/molecules/Button";
 import { Typography } from "@/components/atoms/Typography";
 import { DataTable } from "@/components/molecules/DataTable";
@@ -128,17 +128,6 @@ export const EpiListPage = () => {
           onSuccess={() => reloadEpi("Suppresion d'un EPI")}
         />
       )}
-      {/*
-      {selectedEpiList && (
-        <EpiListEditModal
-          isOpen={modalState.edit}
-          onClose={handleCloseModal}
-          epiCheck={selectedEpiList}
-          users={epiUsers}
-          onSuccess={() => reloadEpi("Modification de l'EPI")}
-        />
-      )}
- */}
 
       {modalState.create && (
         <EpiListCreateModal

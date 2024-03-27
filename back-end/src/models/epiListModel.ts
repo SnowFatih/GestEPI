@@ -118,9 +118,7 @@ export const EpiListModel = {
     let connection;
     try {
       connection = await pool.getConnection();
-      const rows = await pool.query(
-        `delete from epi where id = "${id}"`,
-      );
+      const rows = await pool.query('DELETE FROM epi WHERE id = ?', [id]);
       return rows;
     } catch (error) {
       return error;

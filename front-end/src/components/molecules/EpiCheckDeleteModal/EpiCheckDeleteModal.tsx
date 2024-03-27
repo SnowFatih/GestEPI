@@ -6,7 +6,6 @@ import { Typography } from "@/components/atoms/Typography";
 
 import { EpiCheck } from "@/types/type";
 import { formatDateString } from "@/utils/date";
-import { getUserNameById } from "@/utils/getUserNameById";
 
 interface DeleteModalProps {
   isOpen: boolean;
