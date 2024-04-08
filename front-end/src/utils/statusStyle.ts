@@ -27,6 +27,19 @@ export const getStatusStyle = (status: number) => {
   }
 };
 
+export const getStatusBackgroundStyle = (status: number) => {
+  switch (status) {
+    case CheckStatus.CONFORME:
+      return "bg-green-500";
+    case CheckStatus.AREPARER:
+      return "bg-yellow-500";
+    case CheckStatus.AMETTREAUREBUT:
+      return "bg-red-500";
+    default:
+      return "bg-gray-500";
+  }
+};
+
 export const checkStatusOptions = [
   { id: "1", name: "Conforme" },
   { id: "2", name: "Non conforme" },

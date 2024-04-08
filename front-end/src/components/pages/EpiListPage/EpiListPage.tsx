@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { EPI, EpiType, User } from "@/types/type";
+import { EPI, EpiCheck, EpiType } from "@/types/type";
 import { Button } from "@/components/molecules/Button";
 import { Typography } from "@/components/atoms/Typography";
 import { DataTable } from "@/components/molecules/DataTable";
@@ -16,6 +16,7 @@ import { EpiListEditModal } from "@/components/molecules/EpiListEditModal";
 
 export const EpiListPage = () => {
   const [epiList, setEpiList] = useState<EPI[]>([]);
+  const [epiChecks, setEpiChecks] = useState<EpiCheck[]>([]);
   const [epiTypes, setEpiTypes] = useState<EpiType[]>([]);
   const [modalState, setModalState] = useState({
     create: false,
@@ -35,6 +36,17 @@ export const EpiListPage = () => {
       }
     };
     fetchEpiList();
+
+    const fetchEpiChecks = async () => {
+      try {
+        const response = await axios.get("http://localhost:5500/checks");
+        setEpiChecks(response.data);
+        console.log("EpiChecks récupérés:", response.data);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des epiChecks");
+      }
+    };
+    fetchEpiChecks();
 
     const fetchEpiTypes = async () => {
       try {
@@ -84,6 +96,11 @@ export const EpiListPage = () => {
     }
   };
 
+  const checkId = (epi: EPI) => {
+    const check = epiChecks.find((check) => check.epiId === epi.id);
+    return check ? check.id : null;
+  };
+
   return (
     <>
       <DashboardLayout>
@@ -122,6 +139,7 @@ export const EpiListPage = () => {
           isOpen={modalState.delete}
           onClose={handleCloseModal}
           epi={selectedEpiList}
+          cannotDelete={checkId(selectedEpiList) !== null}
           epiTypes={epiTypes}
           onSuccess={() => reloadEpi("Suppresion d'un EPI")}
         />

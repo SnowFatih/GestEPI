@@ -19,7 +19,7 @@ const StatCardGrid: React.FC<StatCardGridProps> = ({ title, stats, icon }) => {
   return (
     <div>
       {title && (
-        <div className="flex gap-2 w-fit items-center mt-10 border-gray-100 m-auto bg-white px-10 pt-2 rounded-t-3xl shadow-lg">
+        <div className="flex gap-2 w-fit items-center mt-10 py-2 border-gray-100 m-auto bg-white px-10 rounded-t-3xl shadow-lg">
           {icon && <div className="text-2xl">{icon}</div>}
           <Typography variant="h4" weight="semibold">
             {title}
@@ -29,7 +29,7 @@ const StatCardGrid: React.FC<StatCardGridProps> = ({ title, stats, icon }) => {
 
       <div className="relative">
         <div className="mx-auto max-w-4xl">
-          <dl className="rounded-3xl overflow-auto bg-white shadow-lg sm:grid sm:grid-cols-3">
+          <dl className="rounded-3xl overflow-auto border-t border-gray-100 bg-white shadow-lg sm:grid sm:grid-cols-3">
             {stats.map((stat, index) => (
               <div
                 key={index}

@@ -246,24 +246,23 @@ export const EpiListEditModal: React.FC<ModalProps> = ({
         <div className="gap-3 grid grid-cols-3">
           <span>
             <Typography variant="paragraph" marginClass="mb-1">
-              Date d'achat:
-            </Typography>
-            <input
-              type="date"
-              name="purchaseDate"
-              value={editEpiList.purchaseDate}
-              onChange={handleInputChange}
-            />
-          </span>
-
-          <span>
-            <Typography variant="paragraph" marginClass="mb-1">
               Date de fabrication:
             </Typography>
             <input
               type="date"
               name="manufactureDate"
               value={editEpiList.manufactureDate}
+              onChange={handleInputChange}
+            />
+          </span>
+          <span>
+            <Typography variant="paragraph" marginClass="mb-1">
+              Date d'achat:
+            </Typography>
+            <input
+              type="date"
+              name="purchaseDate"
+              value={editEpiList.purchaseDate}
               onChange={handleInputChange}
             />
           </span>

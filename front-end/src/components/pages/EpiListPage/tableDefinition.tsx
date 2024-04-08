@@ -58,7 +58,7 @@ export const configureColumns = (
           onClick={() => navigate(`/epi/details/${info.row.original.id}`)}
           icon={<TbEdit size={17} />}
           label="Voir"
-          color="primary"
+          color="secondary"
         />
       ),
       enableSorting: false,

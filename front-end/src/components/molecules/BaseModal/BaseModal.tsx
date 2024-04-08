@@ -38,7 +38,7 @@ export const BaseModal: React.FC<Props> = ({
     >
       <div
         className={classNames(
-          "block bg-slate-100 h-fit p-10 border rounded-xl backdrop-blur-md",
+          "block bg-slate-100 h-fit p-8 border rounded-xl backdrop-blur-md",
           {
             "overflow-y-auto": isOpen,
             "max-w-md": maxWidth === "md",

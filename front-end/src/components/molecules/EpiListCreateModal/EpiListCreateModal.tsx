@@ -238,6 +238,18 @@ export const EpiListCreateModal: React.FC<ModalProps> = ({
         <div className="gap-3 grid grid-cols-3">
           <span>
             <Typography variant="paragraph" marginClass="mb-1">
+              Date de fabrication:
+            </Typography>
+            <input
+              type="date"
+              name="manufactureDate"
+              value={newEpiList.manufactureDate}
+              onChange={handleInputChange}
+            />
+          </span>
+
+          <span>
+            <Typography variant="paragraph" marginClass="mb-1">
               Date d'achat:
             </Typography>
             <input
@@ -248,17 +260,6 @@ export const EpiListCreateModal: React.FC<ModalProps> = ({
             />
           </span>
 
-          <span>
-            <Typography variant="paragraph" marginClass="mb-1">
-              Date de fabrication:
-            </Typography>
-            <input
-              type="date"
-              name="manufactureDate"
-              value={newEpiList.manufactureDate}
-              onChange={handleInputChange}
-            />
-          </span>
           <span>
             <Typography variant="paragraph" marginClass="mb-1">
               Date de mise en service:

@@ -13,6 +13,7 @@ interface DeleteModalProps {
   epi: EPI;
   epiTypes: EpiType[];
   onSuccess: () => void;
+  cannotDelete?: boolean;
 }
 
 export const EpiListDeleteModal: React.FC<DeleteModalProps> = ({
@@ -21,6 +22,7 @@ export const EpiListDeleteModal: React.FC<DeleteModalProps> = ({
   epi,
   epiTypes,
   onSuccess,
+  cannotDelete = false,
 }) => {
   const handleDelete = async () => {
     try {
@@ -38,13 +40,36 @@ export const EpiListDeleteModal: React.FC<DeleteModalProps> = ({
       <Typography variant="h1" marginClass="mt-5" align="center">
         Confirmer la suppression
       </Typography>
-      <Typography variant="paragraph" marginClass="my-4" align="center">
-        Êtes-vous sûr de vouloir supprimer :{" "}
-        <strong>
-          {getEpiTypeName(epiTypes, epi.epiType)} [{epi.innerId}]
-        </strong>{" "}
-        ?
-      </Typography>
+      {!cannotDelete ? (
+        <Typography variant="paragraph" marginClass="my-4" align="center">
+          Êtes-vous sûr de vouloir supprimer :{" "}
+          <strong>
+            {getEpiTypeName(epiTypes, epi.epiType)} [{epi.innerId}]
+          </strong>{" "}
+          ?
+        </Typography>
+      ) : (
+        <>
+          <Typography
+            variant="h2"
+            marginClass="my-4"
+            align="center"
+            transform="uppercase"
+            color="red"
+            weight="semibold"
+          >
+            Attention :
+          </Typography>
+          <Typography variant="paragraph" align="center" color="red">
+            Vous ne pouvez pas supprimer cet EPI car il{" "}
+            <strong>possède un contrôle</strong>.
+          </Typography>
+          <Typography variant="paragraph" marginClass="mb-10" align="center">
+            Si vous êtes sûr de vouloir supprimer cet EPI, veuillez d'abord
+            supprimer le contrôle associé.
+          </Typography>
+        </>
+      )}
 
       <div className="flex justify-around gap-5">
         <Button
@@ -54,13 +79,23 @@ export const EpiListDeleteModal: React.FC<DeleteModalProps> = ({
           fullWidth
           onClick={onClose}
         />
-        <Button
-          type="submit"
-          label="Supprimer"
-          color="primary"
-          fullWidth
-          onClick={handleDelete}
-        />
+        {!cannotDelete ? (
+          <Button
+            type="submit"
+            label="Supprimer"
+            color="primary"
+            fullWidth
+            onClick={handleDelete}
+          />
+        ) : (
+          <Button
+            type="button"
+            label="Voir les contrôles"
+            color="secondary"
+            fullWidth
+            href="/checks"
+          />
+        )}
       </div>
     </BaseModal>
   );

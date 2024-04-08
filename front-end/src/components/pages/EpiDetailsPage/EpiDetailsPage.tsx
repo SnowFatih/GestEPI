@@ -16,6 +16,7 @@ import { DashboardLayout } from "@/components/templates/DashboardLayout";
 import {
   TbBuildingFactory2,
   TbCalendarTime,
+  TbCheck,
   TbColorFilter,
   TbEdit,
   TbRocket,
@@ -36,6 +37,11 @@ import { getUserNameById } from "@/utils/getUserNameById";
 import { EpiListDeleteModal } from "@/components/molecules/EpiListDeleteModal";
 import toast from "react-hot-toast";
 import { EpiListEditModal } from "@/components/molecules/EpiListEditModal";
+import {
+  getStatusBackgroundStyle,
+  getStatusLabel,
+  getStatusStyle,
+} from "@/utils/statusStyle";
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
@@ -119,38 +125,25 @@ export const EpiDetailsPage = () => {
     );
   }
 
-  const rawPurchaseDate = epi.purchaseDate;
-  const formattedPurchaseDate = rawPurchaseDate
-    ? formatDateString(rawPurchaseDate)
-    : "en attente";
-  const rawManufactureDate = epi.manufactureDate;
-  const formattedManufactureDate = rawManufactureDate
-    ? formatDateString(rawManufactureDate)
-    : "en attente";
-  const rawInServiceDate = epi.inServiceDate;
-  const formattedInServiceDate = rawInServiceDate
-    ? formatDateString(rawInServiceDate)
-    : "en attente";
-
   const timeline = [
     {
       id: 1,
       target: "Fabrication",
-      date: formattedManufactureDate,
+      date: epi.manufactureDate,
       icon: TbBuildingFactory2,
       iconBackground: epi.manufactureDate ? "bg-green-500" : "bg-gray-400",
     },
     {
       id: 2,
       target: "Achat",
-      date: formattedPurchaseDate,
+      date: epi.purchaseDate,
       icon: TbShoppingCart,
       iconBackground: epi.purchaseDate ? "bg-green-500" : "bg-gray-400",
     },
     {
       id: 3,
       target: "Mise en service",
-      date: formattedInServiceDate,
+      date: epi.inServiceDate,
       icon: TbRocket,
       iconBackground: epi.inServiceDate ? "bg-green-500" : "bg-gray-400",
     },
@@ -376,21 +369,19 @@ export const EpiDetailsPage = () => {
                               className={classNames(
                                 action.iconBackground,
                                 action.iconForeground,
-                                "inline-flex rounded-lg p-3 ring-4 ring-white"
+                                "inline-flex rounded-lg gap-2 p-3 ring-4 ring-white"
                               )}
                             >
                               <action.icon
                                 className="h-6 w-6"
                                 aria-hidden="true"
                               />
+                              <Typography variant="h5" weight="semibold">
+                                {action.name}
+                              </Typography>
                             </span>
                           </div>
                           <div className="mt-4">
-                            <h3 className="text-lg font-medium">
-                              <a className="focus:outline-none">
-                                {action.name}
-                              </a>
-                            </h3>
                             <div className="mt-1 ml-2 text-sm text-gray-500 flex flex-col gap-1">
                               <p>{action.description}</p>
                               <div className="flex items-center gap-2">
@@ -453,13 +444,83 @@ export const EpiDetailsPage = () => {
                                       </p>
                                     </div>
                                     <div className="whitespace-nowrap text-right text-sm text-gray-500">
-                                      {event.date}
+                                      {event.date
+                                        ? formatDateString(event.date)
+                                        : "en attente"}
                                     </div>
                                   </div>
                                 </div>
                               </div>
                             </li>
                           ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section>
+                    <div className="rounded-lg bg-white shadow">
+                      <div className=" p-5">
+                        <h2 className="text-base font-medium text-gray-900">
+                          Les dernières contrôles réalisés
+                        </h2>
+                        <ul className="-mb-8 mt-6 pb-7">
+                          {epiChecks
+                            .filter((check) => check.epiId === epi.id)
+                            .map((check) => (
+                              <li key={check.id}>
+                                <div className="relative pb-2">
+                                  <div className="relative flex space-x-3">
+                                    <div>
+                                      <span
+                                        className={classNames(
+                                          getStatusBackgroundStyle(
+                                            check.checkStatus
+                                          ),
+                                          "h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white"
+                                        )}
+                                      >
+                                        {check.checkStatus ===
+                                          CheckStatus.CONFORME && (
+                                          <TbCheck
+                                            className="h-5 w-5 text-white"
+                                            aria-hidden="true"
+                                          />
+                                        )}
+                                        {check.checkStatus ===
+                                          CheckStatus.AMETTREAUREBUT && (
+                                          <TbTrash
+                                            className="h-5 w-5 text-white"
+                                            aria-hidden="true"
+                                          />
+                                        )}
+                                        {check.checkStatus ===
+                                          CheckStatus.AREPARER && (
+                                          <TbTool
+                                            className="h-5 w-5 text-white"
+                                            aria-hidden="true"
+                                          />
+                                        )}
+                                      </span>
+                                    </div>
+                                    <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+                                      <div>
+                                        <p className="text-sm text-gray-500">
+                                          <a className="font-medium text-gray-900">
+                                            {getStatusLabel(check.checkStatus)}
+                                          </a>
+                                        </p>
+                                      </div>
+                                      <div className="whitespace-nowrap text-right text-sm text-gray-500">
+                                        {formatDateString(check.checkDate)}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </li>
+                            ))}
+                          {epiChecks.filter((check) => check.epiId === epi.id)
+                            .length === 0 && "aucun controle effectué"}
                         </ul>
                       </div>
                     </div>
