@@ -96,7 +96,7 @@ export const EpiListPage = () => {
     }
   };
 
-  const checkId = (epi: EPI) => {
+  const cannotBeDeleted = (epi: EPI) => {
     const check = epiChecks.find((check) => check.epiId === epi.id);
     return check ? check.id : null;
   };
@@ -139,7 +139,7 @@ export const EpiListPage = () => {
           isOpen={modalState.delete}
           onClose={handleCloseModal}
           epi={selectedEpiList}
-          cannotDelete={checkId(selectedEpiList) !== null}
+          cannotDelete={cannotBeDeleted(selectedEpiList) !== null}
           epiTypes={epiTypes}
           onSuccess={() => reloadEpi("Suppresion d'un EPI")}
         />
@@ -151,7 +151,7 @@ export const EpiListPage = () => {
           onClose={handleCloseModal}
           epi={selectedEpiList}
           epiTypes={epiTypes}
-          onSuccess={() => reloadEpi("Modification d'un EPI")}
+          onSuccess={() => reloadEpi("Modification de l'EPI")}
           epiList={epiList}
         />
       )}

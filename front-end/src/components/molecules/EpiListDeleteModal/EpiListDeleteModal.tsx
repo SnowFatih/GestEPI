@@ -36,18 +36,20 @@ export const EpiListDeleteModal: React.FC<DeleteModalProps> = ({
   };
 
   return (
-    <BaseModal isOpen={isOpen} maxWidth="xl" onCloseClick={onClose}>
-      <Typography variant="h1" marginClass="mt-5" align="center">
-        Confirmer la suppression
-      </Typography>
+    <BaseModal isOpen={isOpen} maxWidth="lg" onCloseClick={onClose}>
       {!cannotDelete ? (
-        <Typography variant="paragraph" marginClass="my-4" align="center">
-          Êtes-vous sûr de vouloir supprimer :{" "}
-          <strong>
-            {getEpiTypeName(epiTypes, epi.epiType)} [{epi.innerId}]
-          </strong>{" "}
-          ?
-        </Typography>
+        <>
+          <Typography variant="h1" marginClass="mt-5" align="center">
+            Confirmer la suppression
+          </Typography>
+          <Typography variant="paragraph" marginClass="my-4" align="center">
+            Êtes-vous sûr de vouloir supprimer :{" "}
+            <strong>
+              {getEpiTypeName(epiTypes, epi.epiType)} [{epi.innerId}]
+            </strong>{" "}
+            ?
+          </Typography>
+        </>
       ) : (
         <>
           <Typography
@@ -60,13 +62,22 @@ export const EpiListDeleteModal: React.FC<DeleteModalProps> = ({
           >
             Attention :
           </Typography>
-          <Typography variant="paragraph" align="center" color="red">
+          <Typography
+            variant="h4"
+            align="center"
+            color="red"
+            marginClass="mb-2"
+          >
             Vous ne pouvez pas supprimer cet EPI car il{" "}
-            <strong>possède un contrôle</strong>.
+            <strong>possède un contrôle</strong>
           </Typography>
-          <Typography variant="paragraph" marginClass="mb-10" align="center">
+          <Typography
+            variant="smallParagraph"
+            marginClass="mb-10"
+            align="center"
+          >
             Si vous êtes sûr de vouloir supprimer cet EPI, veuillez d'abord
-            supprimer le contrôle associé.
+            supprimer le(s) contrôle(s) associé(s).
           </Typography>
         </>
       )}

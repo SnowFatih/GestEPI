@@ -175,6 +175,8 @@ export const EpiDetailsPage = () => {
     },
   ];
 
+  const epiCheck = epiChecks.find((check) => check.epiId === epi.id)?.userId;
+
   const actions = [
     {
       icon: TbSettings,
@@ -188,7 +190,7 @@ export const EpiDetailsPage = () => {
       icon: TbColorFilter,
       name: "Matériaux",
       color: true,
-      description: `Taille : ${epi.size}m`,
+      description: `Taille : ${epi.size || 0}m`,
       secondDescription: `Couleur : ${epi.color}`,
       iconForeground: "text-purple-700",
       iconBackground: "bg-purple-50",
@@ -208,12 +210,12 @@ export const EpiDetailsPage = () => {
       iconBackground: "bg-sky-50",
     },
     {
-      icon: TbUser,
+      icon: TbX,
       name: "Dernier contrôle",
-      description: `Effectué par ${getUserNameById(
-        epiUsers,
-        epiChecks[0].userId
-      )}`,
+      description:
+        epiCheck !== undefined
+          ? "Effectué par " + getUserNameById(epiUsers, epiCheck)
+          : "Aucun contrôle effectué",
       iconForeground: "text-sky-700",
       iconBackground: "bg-sky-50",
     },
@@ -232,12 +234,9 @@ export const EpiDetailsPage = () => {
     setModalState({ delete: false, edit: false });
   };
 
-  const afterDeletionSuccess = async () => {
-    toast.success("Suppression réussie", {
-      duration: 4000,
-      position: "bottom-right",
-    });
-    navigate(`/epi`);
+  const cannotBeDeleted = (epi: EPI) => {
+    const check = epiChecks.find((check) => check.epiId === epi.id);
+    return check ? check.id : null;
   };
 
   const reloadEpi = async (message: string = "Action réalisée avec succès") => {
@@ -436,13 +435,9 @@ export const EpiDetailsPage = () => {
                                     </span>
                                   </div>
                                   <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
-                                    <div>
-                                      <p className="text-sm text-gray-500">
-                                        <a className="font-medium text-gray-900">
-                                          {event.target}
-                                        </a>
-                                      </p>
-                                    </div>
+                                    <p className="text-sm font-medium text-gray-900">
+                                      {event.target}
+                                    </p>
                                     <div className="whitespace-nowrap text-right text-sm text-gray-500">
                                       {event.date
                                         ? formatDateString(event.date)
@@ -470,7 +465,7 @@ export const EpiDetailsPage = () => {
                             .map((check) => (
                               <li key={check.id}>
                                 <div className="relative pb-2">
-                                  <div className="relative flex space-x-3">
+                                  <div className="relative flex space-x-3 items-center">
                                     <div>
                                       <span
                                         className={classNames(
@@ -503,16 +498,17 @@ export const EpiDetailsPage = () => {
                                         )}
                                       </span>
                                     </div>
-                                    <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
-                                      <div>
-                                        <p className="text-sm text-gray-500">
-                                          <a className="font-medium text-gray-900">
-                                            {getStatusLabel(check.checkStatus)}
-                                          </a>
-                                        </p>
-                                      </div>
-                                      <div className="whitespace-nowrap text-right text-sm text-gray-500">
-                                        {formatDateString(check.checkDate)}
+                                    <div className="flex flex-col">
+                                      <p className="text-sm font-medium text-gray-900">
+                                        {getStatusLabel(check.checkStatus)}
+                                      </p>
+                                      <div className="whitespace-nowrap text-right text-xs text-gray-500">
+                                        le {formatDateString(check.checkDate)}{" "}
+                                        par{" "}
+                                        {getUserNameById(
+                                          epiUsers,
+                                          check.userId
+                                        )}
                                       </div>
                                     </div>
                                   </div>
@@ -520,7 +516,11 @@ export const EpiDetailsPage = () => {
                               </li>
                             ))}
                           {epiChecks.filter((check) => check.epiId === epi.id)
-                            .length === 0 && "aucun controle effectué"}
+                            .length === 0 && (
+                            <div className="whitespace-nowrap text-sm text-gray-500">
+                              Aucun contrôle n'est encore effectué.
+                            </div>
+                          )}
                         </ul>
                       </div>
                     </div>
@@ -547,7 +547,7 @@ export const EpiDetailsPage = () => {
           onClose={handleCloseModal}
           epi={epi}
           epiTypes={epiTypes}
-          onSuccess={() => reloadEpi("Modification d'un EPI")}
+          onSuccess={() => reloadEpi("Modification de l'EPI")}
           epiList={epiList}
         />
       )}
@@ -557,8 +557,9 @@ export const EpiDetailsPage = () => {
           isOpen={modalState.delete}
           onClose={handleCloseModal}
           epi={epi}
+          cannotDelete={cannotBeDeleted(epi) !== null}
           epiTypes={epiTypes}
-          onSuccess={afterDeletionSuccess}
+          onSuccess={() => reloadEpi("Suppresion d'un EPI")}
         />
       )}
     </>

@@ -2,11 +2,11 @@ import mariadb from 'mariadb';
 
 //********** Pool **********/
 export const pool = mariadb.createPool({
-  host: 'localhost',
-  port: 3306,
-  user: 'root',
-  password: 'root',
-  database: 'GestEPI',
+  host: 'mysql-fatih.alwaysdata.net',
+  // port: 3306, je laisse en pour le local
+  user: 'fatih',
+  password: 'fatihSnow2526',
+  database: 'fatih_gestepi',
   bigNumberStrings: true,
   connectionLimit: 5,
 });

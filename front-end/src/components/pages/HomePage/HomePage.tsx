@@ -1,21 +1,32 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { CheckStatus, EPI, EpiCheck, EpiType } from "@/types/type";
+import {
+  CheckFrequencyUnit,
+  CheckStatus,
+  EPI,
+  EpiCheck,
+  EpiType,
+} from "@/types/type";
 import { Typography } from "@/components/atoms/Typography";
 import { DashboardLayout } from "@/components/templates/DashboardLayout";
 import StatCardGrid from "@/components/molecules/StatCardGrid/StatCardGrid";
 
 import { TbHexagonLetterE, TbTool } from "react-icons/tb";
+import moment from "moment";
+import { RetardBlock } from "@/components/molecules/RetardBlock";
 
 export const HomePage = () => {
   const [epiTypes, setEpiTypes] = useState<EpiType[]>([]);
   const [epiChecks, setEpiChecks] = useState<EpiCheck[]>([]);
   const [epiList, setEpiList] = useState<EPI[]>([]);
+  const [epiOverdue, setEpiOverdue] = useState<EPI[]>([]);
+
   useEffect(() => {
     const fetchEpiList = async () => {
       try {
         const response = await axios.get("http://localhost:5500/epi");
         setEpiList(response.data);
+        checkForOverdueEpi(response.data, epiChecks);
         console.log("EpiList récupérés:", response.data);
       } catch (error) {
         console.error("Erreur lors de la récupération de la liste des epis");
@@ -59,6 +70,36 @@ export const HomePage = () => {
     today
   );
 
+  const checkForOverdueEpi = (epis: EPI[], epiChecks: EpiCheck[]) => {
+    const today = moment();
+    const overdueEpis = epis.filter((epi) => {
+      // Trouver les contrôles pour cet EPI et prendre la date du dernier contrôle
+      const epiChecksForEpi = epiChecks.filter(
+        (check) => check.epiId === epi.id
+      );
+      let lastCheckDate = epi.inServiceDate;
+      if (epiChecksForEpi.length > 0) {
+        // Trier les contrôles par date dans l'ordre décroissant et prendre le premier
+        const sortedChecks = epiChecksForEpi.sort(
+          (a, b) =>
+            moment(b.checkDate).valueOf() - moment(a.checkDate).valueOf()
+        );
+        lastCheckDate = sortedChecks[0].checkDate;
+      }
+
+      // Calculer la prochaine date de contrôle à partir de la dernière date de contrôle ou de la date de mise en service
+      const nextCheckDate = moment(lastCheckDate).add(
+        epi.checkFrequency,
+        epi.checkFrequencyUnit === CheckFrequencyUnit.YEAR ? "years" : "months"
+      );
+
+      // Vérifier si cette date est passée
+      return nextCheckDate.isBefore(today);
+    });
+
+    setEpiOverdue(overdueEpis);
+  };
+
   return (
     <DashboardLayout>
       <div className="mx-auto max-w-4xl text-center mt-10">
@@ -68,6 +109,27 @@ export const HomePage = () => {
         <Typography variant="h3" marginClass="mt-4" align="center" color="gray">
           Ayez un aperçu de l'ensemble des différentes sections
         </Typography>
+      </div>
+
+      <div className="my-8">
+        <Typography
+          variant="h2"
+          weight="semibold"
+          align="center"
+          marginClass="mb-4"
+        >
+          Liste des EPI en retard
+        </Typography>
+
+        <div className="flex gap-5 justify-center">
+          {epiOverdue.length > 0 ? (
+            epiOverdue.map((epi) => (
+              <RetardBlock title={`${epi.brand} ${epi.model} ${epi.innerId}`} />
+            ))
+          ) : (
+            <RetardBlock noRetard title={"Aucun EPI en retard."} />
+          )}
+        </div>
       </div>
 
       <StatCardGrid
