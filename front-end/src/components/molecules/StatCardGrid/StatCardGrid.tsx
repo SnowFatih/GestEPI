@@ -19,9 +19,13 @@ const StatCardGrid: React.FC<StatCardGridProps> = ({ title, stats, icon }) => {
   return (
     <div>
       {title && (
-        <div className="flex gap-2 w-fit items-center mt-10 py-2 border-gray-100 m-auto bg-white px-10 rounded-t-3xl shadow-lg">
-          {icon && <div className="text-2xl">{icon}</div>}
-          <Typography variant="h4" weight="semibold">
+        <div className="flex gap-2 w-fit items-center mt-10 py-2 border-gray-800 bg-[#131D25] px-10 rounded-t-3xl shadow-lg">
+          {icon && <div className="text-2xl text-[#F9C900]">{icon}</div>}
+          <Typography
+            variant="h4"
+            weight="semibold"
+            customColor="text-[#F9C900]"
+          >
             {title}
           </Typography>
         </div>
@@ -29,18 +33,20 @@ const StatCardGrid: React.FC<StatCardGridProps> = ({ title, stats, icon }) => {
 
       <div className="relative">
         <div className="mx-auto max-w-4xl">
-          <dl className="rounded-3xl overflow-auto border-t border-gray-100 bg-white shadow-lg sm:grid sm:grid-cols-3">
+          <dl className="rounded-3xl rounded-tl-none overflow-auto border-gray-800 bg-[#131D25] shadow-lg sm:grid sm:grid-cols-3">
             {stats.map((stat, index) => (
               <div
                 key={index}
-                className={`flex flex-col border-gray-100 p-6 text-center ${
+                className={`flex flex-col border-gray-800 p-6 text-center ${
                   index !== 0 && "sm:border-l"
                 } ${
                   index < stats.length - 1 ? "border-b sm:border-r" : "border-t"
                 }`}
               >
-                <dt className="order-2 mt-2 text-lg font-medium leading-6 text-gray-500">
-                  {stat.title}
+                <dt className="order-2 mt-2">
+                  <Typography variant="h6" weight="semibold" color="white">
+                    {stat.title}
+                  </Typography>
                 </dt>
                 <span className="flex gap-2 justify-center items-end">
                   <dd

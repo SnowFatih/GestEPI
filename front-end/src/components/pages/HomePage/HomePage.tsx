@@ -13,7 +13,7 @@ import StatCardGrid from "@/components/molecules/StatCardGrid/StatCardGrid";
 
 import { TbHexagonLetterE, TbTool } from "react-icons/tb";
 import moment from "moment";
-import { RetardBlock } from "@/components/molecules/RetardBlock";
+import { RetardBlocks } from "@/components/molecules/RetardBlock/RetardBlocks";
 
 export const HomePage = () => {
   const [epiTypes, setEpiTypes] = useState<EpiType[]>([]);
@@ -111,69 +111,56 @@ export const HomePage = () => {
         </Typography>
       </div>
 
-      <div className="my-8">
-        <Typography
-          variant="h2"
-          weight="semibold"
-          align="center"
-          marginClass="mb-4"
-        >
-          Liste des EPI en retard
-        </Typography>
+      <section className="flex m-auto w-full justify-around mt-14">
+        <section>
+          <StatCardGrid
+            title="Équipements de Protection Individuel"
+            icon={<TbHexagonLetterE />}
+            stats={[
+              {
+                title: "Types de matériel au total",
+                value: epiTypes.length,
+                color: "text-emerald-400",
+              },
+              {
+                title: "Équipements au total",
+                value: epiList.length,
+                color: "text-emerald-400",
+              },
+            ]}
+          />
 
-        <div className="flex gap-5 justify-center">
-          {epiOverdue.length > 0 ? (
-            epiOverdue.map((epi) => (
-              <RetardBlock title={`${epi.brand} ${epi.model} ${epi.innerId}`} />
-            ))
-          ) : (
-            <RetardBlock noRetard title={"Aucun EPI en retard."} />
-          )}
-        </div>
-      </div>
-
-      <StatCardGrid
-        title="Équipements de Protection Individuel"
-        icon={<TbHexagonLetterE />}
-        stats={[
-          {
-            title: "Types de matériel au total",
-            value: epiTypes.length,
-            color: "text-green-600",
-          },
-          {
-            title: "Équipements au total",
-            value: epiList.length,
-            color: "text-green-600",
-          },
-        ]}
-      />
-
-      <StatCardGrid
-        title="Contrôle des EPI"
-        icon={<TbTool />}
-        stats={[
-          {
-            title: "Réalisés au total",
-            value: epiChecks.length,
-            color: "text-green-600",
-          },
-          {
-            title: "Réalisés en " + monthName,
-            value: checksThisMonth.length,
-            color: "text-green-600",
-          },
-          {
-            title: "Contrôles conforme",
-            value: epiChecks.filter(
-              (check) => check.checkStatus === CheckStatus.CONFORME
-            ).length,
-            suffix: "/" + epiChecks.length,
-            suffixColor: "text-gray-400",
-            color: "text-green-600",
-          },
-        ]}
-      />
+          <StatCardGrid
+            title="Contrôle des EPI"
+            icon={<TbTool />}
+            stats={[
+              {
+                title: "Réalisés au total",
+                value: epiChecks.length,
+                color: "text-emerald-400",
+              },
+              {
+                title: "Réalisés en " + monthName,
+                value: checksThisMonth.length,
+                color: "text-emerald-400",
+              },
+              {
+                title: "Contrôles conforme",
+                value: epiChecks.filter(
+                  (check) => check.checkStatus === CheckStatus.CONFORME
+                ).length,
+                suffix: "/" + epiChecks.length,
+                suffixColor: "text-gray-400",
+                color: "text-emerald-400",
+              },
+            ]}
+          />
+        </section>
+        <div className=" border-l border-2 rounded-full border-[#F9C900] -my-5" />
+        <section>
+          <RetardBlocks epiOverdue={epiOverdue} />
+        </section>
+      </section>
     </DashboardLayout>
   );
 };

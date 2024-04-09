@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { TbEdit, TbTrash } from "react-icons/tb";
+import { TbEdit, TbExternalLink, TbEye, TbTrash } from "react-icons/tb";
 import { Button } from "@/components/molecules/Button";
 import { generateColumnHelper } from "@/components/molecules/DataTable/utils";
 import React from "react";
@@ -56,7 +56,7 @@ export const configureColumns = (
       cell: (info: any) => (
         <Button
           onClick={() => navigate(`/epi/details/${info.row.original.id}`)}
-          icon={<TbEdit size={17} />}
+          icon={<TbExternalLink size={17} />}
           label="Voir"
           color="secondary"
         />

@@ -135,6 +135,7 @@ export const Typography = ({
         ],
         shadow && "drop-shadow-lg",
         customColorClass && customColorClass,
+        customColor && customColor,
         marginClass && marginClass,
         styleFont && styleFont,
         withCarriageReturn && "whitespace-pre-line"

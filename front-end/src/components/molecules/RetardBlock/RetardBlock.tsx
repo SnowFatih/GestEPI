@@ -1,36 +1,42 @@
+import { Typography } from "@/components/atoms/Typography";
+import { EPI } from "@/types/type";
+import { formatDateString } from "@/utils/date";
 import classNames from "classnames";
 import React from "react";
+import { TbExternalLink } from "react-icons/tb";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
-  title: string;
-  noRetard?: boolean;
+  epi: EPI;
+  lastControlDate?: string;
 };
 
 export const RetardBlock: React.FC<Props> = ({
-  title,
-  noRetard = true,
+  epi,
+  lastControlDate,
 }: Props) => {
+  const navigate = useNavigate();
   return (
-    <div className="relative">
-      <div className="mx-auto w-fit">
-        <dl
-          className={classNames(
-            "rounded-3xl overflow-auto border-b-4 border bg-white shadow-lg",
-            noRetard ? "border-red-400" : "border-green-400"
-          )}
-        >
-          <div className="flex flex-col border-gray-100 p-6 text-centersm:border-l">
-            <dt className="order-2 mt-2 text-lg font-medium leading-6 text-gray-500">
-              en retard
-            </dt>
-            <span className="flex justify-center items-end">
-              <dd className="order-1 text-xl font-bold tracking-tight">
-                {title}
-              </dd>
-            </span>
+    <div
+      onClick={() => navigate(`/epi/details/${epi.id}`)}
+      className="hover:cursor-pointer hover:scale-[102%] max-w-[240px] transform transition duration-300 ease-in-out"
+    >
+      <dl className="rounded-xl overflow-auto border-b-4 border bg-white shadow-lg border-[#F9C900]">
+        <div className="flex flex-col border-gray-100 p-2 px-4">
+          <Typography variant="h4" weight="semibold">
+            {epi.brand} {epi.model} [{epi.innerId}]
+          </Typography>
+
+          <div className="mt-1">
+            <Typography variant="small" color="gray" weight="medium">
+              dernier contrôle effectué le
+            </Typography>
+            <Typography variant="smallParagraph" color="gray" weight="semibold">
+              {formatDateString(lastControlDate || "N/C")}
+            </Typography>
           </div>
-        </dl>
-      </div>
+        </div>
+      </dl>
     </div>
   );
 };

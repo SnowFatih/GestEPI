@@ -22,9 +22,14 @@ export const DashboardHeader = ({ onChangeSidebar, headerTitle }: Props) => {
         <Logo long />
       </div>
       <div className="flex items-center w-full">
-        <Typography variant="h3" weight="semibold">
-          {headerTitle || "Back-office Dashboard"}
-        </Typography>
+        <span className="flex flex-col">
+          <Typography variant="smallParagraph" weight="regular">
+            Connecté(e) en tant que :
+          </Typography>
+          <Typography variant="h3" weight="semibold">
+            {headerTitle || "Gestionnaire EPI"}
+          </Typography>
+        </span>
         <div className="flex flex-1" />
       </div>
     </div>
