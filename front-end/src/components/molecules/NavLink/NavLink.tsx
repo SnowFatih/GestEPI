@@ -28,7 +28,7 @@ export const NavLink: React.FC<NavLinkProps> = ({
         active && "bg-gray-100/80"
       )}
     >
-      <span className={classNames("text-xl", active && "text-[#fd9800]")}>
+      <span className={classNames("text-xl", active && "text-[#F9C900]")}>
         {icon}
       </span>
       <Typography

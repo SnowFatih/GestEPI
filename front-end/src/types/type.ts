@@ -52,7 +52,7 @@ export interface User {
   phone: string;
   mail: string;
   userPassword: string;
-  userType: number;
+  userType: UserType;
 }
 
 

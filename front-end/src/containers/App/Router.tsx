@@ -1,6 +1,12 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import { TbHexagonLetterE, TbHome, TbList, TbTool } from "react-icons/tb";
+import {
+  TbHexagonLetterE,
+  TbHome,
+  TbList,
+  TbTool,
+  TbUsers,
+} from "react-icons/tb";
 import { HomePage } from "@/components/pages/HomePage";
 import { ErrorLayout } from "@/components/templates/ErrorLayout";
 import { Button } from "@/components/molecules/Button";
@@ -9,6 +15,7 @@ import { SidebarLink } from "@/components/molecules/SideNavigation";
 import { EpiCheckListPage } from "@/components/pages/EpiCheckListPage";
 import { EpiListPage } from "@/components/pages/EpiListPage";
 import { EpiDetailsPage } from "@/components/pages/EpiDetailsPage";
+import { UsersListPage } from "@/components/pages/UserListPage";
 
 export const Router = () => {
   return (
@@ -16,8 +23,10 @@ export const Router = () => {
       <Route path="/" element={<HomePage />} />
       <Route path="/epi" element={<EpiListPage />} />
       <Route path="/epi/details/:epiId" element={<EpiDetailsPage />} />
-      <Route path="/types" element={<EpiTypeListPage />} />
       <Route path="/checks" element={<EpiCheckListPage />} />
+
+      <Route path="/types" element={<EpiTypeListPage />} />
+      <Route path="/users" element={<UsersListPage />} />
 
       <Route
         path="*"
@@ -59,5 +68,11 @@ export const SIDEBAR_SECOND_LINKS: SidebarLink[] = [
     to: "/types",
     icon: <TbList />,
     id: 1,
+  },
+  {
+    name: "Utilisateurs",
+    to: "/users",
+    icon: <TbUsers />,
+    id: 2,
   },
 ];
