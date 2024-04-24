@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import {
   TbHexagonLetterE,
+  TbHistory,
   TbHome,
   TbList,
   TbTool,
@@ -13,9 +14,11 @@ import { Button } from "@/components/molecules/Button";
 import { EpiTypeListPage } from "@/components/pages/EpiTypeListPage";
 import { SidebarLink } from "@/components/molecules/SideNavigation";
 import { EpiCheckListPage } from "@/components/pages/EpiCheckListPage";
-import { EpiListPage } from "@/components/pages/EpiListPage";
+
 import { EpiDetailsPage } from "@/components/pages/EpiDetailsPage";
 import { UsersListPage } from "@/components/pages/UserListPage";
+import { EpiListPage } from "@/components/pages/EpiListPage";
+import { HistoryPage } from "@/components/pages/HistoryPage";
 
 export const Router = () => {
   return (
@@ -27,6 +30,8 @@ export const Router = () => {
 
       <Route path="/types" element={<EpiTypeListPage />} />
       <Route path="/users" element={<UsersListPage />} />
+
+      <Route path="/history" element={<HistoryPage />} />
 
       <Route
         path="*"
@@ -73,6 +78,12 @@ export const SIDEBAR_SECOND_LINKS: SidebarLink[] = [
     name: "Utilisateurs",
     to: "/users",
     icon: <TbUsers />,
+    id: 2,
+  },
+  {
+    name: "Historique",
+    to: "/history",
+    icon: <TbHistory />,
     id: 2,
   },
 ];

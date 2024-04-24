@@ -1,4 +1,6 @@
 import mariadb from 'mariadb';
+import { DatabaseUtils } from '../utils/logExport';
+
 
 //********** Pool **********/
 export const pool = mariadb.createPool({
@@ -11,3 +13,6 @@ export const pool = mariadb.createPool({
   connectionLimit: 5,
 });
 
+
+const databaseUtils = new DatabaseUtils(pool);
+export { databaseUtils };

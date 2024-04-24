@@ -5,6 +5,7 @@ import epiTypeController from './controller/epiTypeController';
 import epiCheckController from './controller/epiCheckController';
 import userController from './controller/userController';
 import epiListController from './controller/epiListController';
+import exportCSVJsonController from './controller/exportCSVJsonController';
 
 
 
@@ -29,6 +30,8 @@ app.use('/checks', epiCheckController);
 app.use('/users', userController);
 app.use('/epi', epiListController);
 
+app.use('/export', exportCSVJsonController);
+
 
 
 app.use(middlewares.notFound);
@@ -36,3 +39,5 @@ app.use(middlewares.errorHandler);
 
 
 export default app;
+
+
